@@ -1,0 +1,147 @@
+/* ===== Page Background ===== */
+.login-page {
+  background: #f4f6f9;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+/* ===== Card Container ===== */
+.form-holder {
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== Left Info Section ===== */
+.info {
+  background: linear-gradient(135deg, #ff6a88, #ff99ac);
+  color: #fff;
+  padding: 60px 50px;
+}
+
+.info .logo h1 {
+  font-size: 38px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.info p {
+  font-size: 15px;
+  opacity: 0.9;
+}
+
+/* ===== Right Form Section ===== */
+.form {
+  padding: 60px 50px;
+  background: #ffffff;
+}
+
+.form .content {
+  width: 100%;
+}
+
+/* ===== Form Groups ===== */
+.form-group {
+  margin-bottom: 25px;
+}
+
+/* ===== Input Styling ===== */
+.input-material {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #f9fafc;
+  font-size: 14px;
+  transition: 0.3s ease;
+}
+
+.input-material:focus {
+  outline: none;
+  border-color: #007bff;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+/* ===== Login Button ===== */
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  background: linear-gradient(45deg, rgb(22, 183, 22) );
+  transition: 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(45deg,green);
+}
+
+/* ===== Links ===== */
+.forgot-pass,
+.signup {
+  color: skyblue;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.forgot-pass:hover,
+.signup:hover {
+  text-decoration: underline;
+}
+
+/* ===== Small Text ===== */
+small {
+  font-size: 13px;
+  color: #666;
+}
+
+/* ===== Copyright ===== */
+.copyrights {
+  padding: 20px;
+  font-size: 13px;
+  color: #777;
+}
+
+.copyrights a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 991px) {
+  .info {
+    display: none;
+  }
+
+  .form {
+    padding: 40px;
+  }
+}
+
+.d-flex.align-items-center.h-100 {
+  min-height: 100vh;
+  background-color: rgb(194, 197, 201);
+  width: 80%;
+}
+
+.content{
+    width: 80%;
+    padding: 40px;
+    background-color: rgb(194, 197, 201);
+}
+
+.d-flex.align-items-center.h-101 {
+  min-height: 100vh;
+  background-color: white;
+}
+
+.content2{
+    width: 100%;
+    background-color: white;
+}

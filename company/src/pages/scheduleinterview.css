@@ -1,0 +1,36 @@
+
+/* ===============================
+   SCHEDULE INTERVIEW PAGE
+================================ */
+
+.interview-page {
+  padding: 40px;
+  background-color: #f4f6f9;
+  min-height: 100vh;
+}
+
+/* Reuse form-card, form-grid, form-group from company page */
+
+/* Select Styling */
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  outline: none;
+  font-size: 14px;
+}
+
+.form-group select:focus {
+  border-color: #0d6efd;
+}
+
+.form-card .submit-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+}
+
+.form-card .submit-btn:hover {
+  background-color: #218838;
+}

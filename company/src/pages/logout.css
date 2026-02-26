@@ -1,0 +1,68 @@
+/* ===============================
+   LOGOUT PAGE
+================================ */
+
+.logout-page {
+  min-height: 100vh;
+  background-color: #f4f6f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logout-card {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 400px;
+}
+
+.logout-card h2 {
+  margin-bottom: 15px;
+  color: #1f2d3d;
+}
+
+.logout-card p {
+  color: #6c757d;
+  margin-bottom: 25px;
+  font-size: 14px;
+}
+
+/* Buttons container */
+.logout-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+/* Confirm Button */
+.btn-confirm {
+  padding: 10px 18px;
+  border: none;
+  background-color: #dc3545;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-confirm:hover {
+  background-color: #bb2d3b;
+}
+
+/* Cancel Button */
+.btn-cancel {
+  padding: 10px 18px;
+  border: none;
+  background-color: #6c757d;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-cancel:hover {
+  background-color: #5a6268;
+}

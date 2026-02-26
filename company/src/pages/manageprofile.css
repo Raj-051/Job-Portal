@@ -1,0 +1,92 @@
+
+/* ===============================
+   JOB PROFILE PAGE
+================================ */
+
+.jobprofile-page {
+  padding: 40px;
+  background-color: #f4f6f9;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.jobprofile-card {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 30px;
+  max-width: 800px;
+  width: 100%;
+}
+
+.jobprofile-header h2 {
+  margin: 0;
+  color: #1f2d3d;
+}
+
+.company-name {
+  color: #6c757d;
+  margin-top: 5px;
+}
+
+.jobprofile-details {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.detail-item {
+  font-size: 14px;
+  color: #374151;
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+.job-description {
+  margin-top: 25px;
+}
+
+.job-description h4 {
+  margin-bottom: 10px;
+  color: #1f2d3d;
+}
+
+.job-description p {
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.apply-btn {
+  margin-top: 25px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  background-color: #0d6efd;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.apply-btn:hover {
+  background-color: #0b5ed7;
+}
+
+.apply-btn.applied {
+  background-color: #198754;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .jobprofile-details {
+    grid-template-columns: 1fr;
+  }
+
+  .full-width {
+    grid-column: span 1;
+  }
+}

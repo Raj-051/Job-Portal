@@ -1,0 +1,193 @@
+/* ========================= */
+/* BODY BACKGROUND */
+/* ========================= */
+
+body {
+  background-color: #f4f6f9 !important;
+  color: #333 !important;
+}
+
+/* ========================= */
+/* SIDEBAR */
+/* ========================= */
+
+#sidebar {
+  background: #ffffff !important;
+  color: #333 !important;
+  border-right: 1px solid #e5e7eb;
+}
+
+#sidebar .sidebar-header {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+#sidebar ul li a {
+  color: #444 !important;
+}
+
+#sidebar ul li a:hover {
+  background: #f1f3f5 !important;
+  color: #007bff !important;
+}
+
+#sidebar .heading {
+  color: #888 !important;
+}
+
+/* ========================= */
+/* HEADER */
+/* ========================= */
+
+.header,
+.navbar {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.navbar-brand {
+  color: #333 !important;
+}
+
+.nav-link {
+  color: #555 !important;
+}
+
+.nav-link:hover {
+  color: #007bff !important;
+}
+
+/* ========================= */
+/* PAGE CONTENT */
+/* ========================= */
+
+/* ===== Layout Fix ===== */
+.page-content {
+  margin-left: 260px;   /* SAME AS SIDEBAR WIDTH */
+  padding: 20px;
+  min-height: 100vh;
+  background: #f5f6fa;
+}
+
+/* ========================= */
+/* DASHBOARD CARDS */
+/* ========================= */
+
+.block,
+.statistic-block {
+  background: #ffffff !important;
+  color: #333 !important;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.progress {
+  background: #e9ecef !important;
+}
+
+/* ========================= */
+/* CHART AREA */
+/* ========================= */
+
+.bar-chart,
+.line-cahrt {
+  background: #ffffff !important;
+}
+
+/* ========================= */
+/* FOOTER */
+/* ========================= */
+
+.footer {
+  background: #ffffff !important;
+  color: #555 !important;
+  border-top: 1px solid #e5e7eb;
+}
+
+.footer a {
+  color: #007bff !important;
+}
+
+/* ========================= */
+/* REMOVE DARK OVERLAY */
+/* ========================= */
+
+.page-header {
+  background: transparent !important;
+}
+
+.page-header,
+.page-header .container-fluid {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb !important;
+}
+#sidebar ul li.active > a,
+#sidebar ul li a.active {
+  background: #f1f3f5 !important;
+  color: #007bff !important;
+}
+
+#sidebar ul li ul {
+  background: #ffffff !important;
+}
+.dropdown-menu {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08) !important;
+}
+
+.dropdown-menu a {
+  color: #333 !important;
+}
+
+.dropdown-menu a:hover {
+  background: #f1f3f5 !important;
+  color: #007bff !important;
+}
+.table thead,
+.table thead th {
+  background: #f8f9fa !important;
+  color: #333 !important;
+}
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #ffffff !important;
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+  background-color: #f8f9fa !important;
+}
+.block,
+.card,
+.statistic-block {
+  background: #ffffff !important;
+  color: #333 !important;
+}
+h1, h2, h3, h4, h5, h6,
+p,
+strong {
+  color: #333 !important;
+}
+/* ===== FORCE WHITE DROPDOWN ===== */
+
+.dropdown-menu,
+.dropdown-menu.tasks-list,
+.tasks-list {
+  background-color: #ffffff !important;
+  color: #333 !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08) !important;
+}
+
+/* Dropdown items */
+.dropdown-menu a,
+.dropdown-menu .dropdown-item,
+.tasks-list .dropdown-item {
+  color: #333 !important;
+}
+
+/* Hover effect */
+.dropdown-menu a:hover,
+.dropdown-menu .dropdown-item:hover,
+.tasks-list .dropdown-item:hover {
+  background-color: #f1f3f5 !important;
+  color: #007bff !important;
+}

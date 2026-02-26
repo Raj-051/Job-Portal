@@ -1,0 +1,138 @@
+/* ===== Header Container ===== */
+.header {
+  position: fixed;
+  top: 0;
+  left: 260px; /* same as sidebar width */
+  right: 0;
+  height: 70px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+  z-index: 999;
+}
+
+/* ===== Navbar ===== */
+.header .navbar {
+  height: 100%;
+  padding: 0 25px;
+}
+
+/* ===== Brand ===== */
+.navbar-brand {
+  text-decoration: none;
+}
+
+.brand-text strong {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.brand-text .text-primary {
+  color: #007bff !important;
+}
+
+/* ===== Sidebar Toggle Button ===== */
+.sidebar-toggle {
+  background: none;
+  border: none;
+  font-size: 18px;
+  margin-left: 15px;
+  cursor: pointer;
+  color: #555;
+}
+
+.sidebar-toggle:hover {
+  color: #007bff;
+}
+
+/* ===== Right Menu ===== */
+.right-menu {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* ===== Nav Icons ===== */
+.right-menu .nav-link {
+  position: relative;
+  font-size: 18px;
+  color: #444;
+  transition: 0.3s;
+}
+
+.right-menu .nav-link:hover {
+  color: #007bff;
+}
+
+/* ===== Badges ===== */
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  font-size: 11px;
+  padding: 3px 6px;
+  border-radius: 50%;
+  color: #fff;
+}
+
+/* Different badge colors */
+.dashbg-1 {
+  background: #007bff;
+}
+
+.dashbg-3 {
+  background: #28a745;
+}
+
+/* ===== Logout ===== */
+.logout .nav-link {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.logout .nav-link i {
+  margin-left: 5px;
+}
+
+/* ===== Search Panel ===== */
+.search-panel {
+  position: fixed;
+  top: 0;
+  left: 260px;
+  right: 0;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  z-index: 1000;
+}
+
+.search-panel.active {
+  display: block;
+}
+
+.search-inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-inner input {
+  width: 400px;
+  padding: 10px;
+  border-radius: 4px;
+  border: none;
+}
+
+.search-inner .submit {
+  margin-left: 10px;
+  padding: 10px 15px;
+  background: #007bff;
+  border: none;
+  color: white;
+  border-radius: 4px;
+}
+
+/* ===== Make space below header ===== */
+.page-content {
+  margin-top: 70px;
+}
