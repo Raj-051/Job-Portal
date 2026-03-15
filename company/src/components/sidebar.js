@@ -30,7 +30,7 @@ function Sidebar() {
       <ul className="menu">
 
         <li>
-          <Link to="/">Dashboard</Link>
+          <Link to="/dashboard">Dashboard</Link>
         </li>
 
         {/* Manage Job Category */}

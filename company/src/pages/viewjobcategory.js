@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import "./viewjobcategory.css";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 function ViewJobcategory() {
   function deleteJobCategory(id) {
@@ -50,10 +50,10 @@ function ViewJobcategory() {
                   <td>{Val.Jobcat_name}</td>
                   <td>{Val.Jobcat_description}</td>
                   <td>
-                    <button className="edit-btn">Edit</button>
+                      <Link to='/editjobcategory/'state={{Jobcat_id: Val.Jobcat_id}} class="Success">Edit</Link>
 
                     <button
-                      className="delete-btn"
+                      className="btn btn-danger"
                       onClick={() => deleteJobCategory(Val.Jobcat_id)}
                     >
                       Delete

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
+import Swal from "sweetalert2";
+import "./ViewEmployer.css";
 
 const ViewEmployer = () => {
   const [employers, setEmployers] = useState([]);
@@ -17,6 +19,65 @@ const ViewEmployer = () => {
       });
   }, []);
 
+  const handleApprove = (Company_id) => {
+    if (Company_id) {
+      Axios.post('http://localhost:1337/api/approveemployer', {
+        Company_id: Company_id
+      })
+      .then((response)=>{
+        if (response.data.message){
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: response.data.message || 'Employer approved successfully',
+            comfirmButtonText: 'OK'
+          }).then(() => {
+            window.location = "/employers"; // Refresh the page after approval
+          });
+        }
+        else {
+          Swal.fire({
+            icon: 'Success',
+            title: 'User is blocked',
+        
+      }).then(() => {
+        window.location = "/employers"; // Refresh the page after approval
+      });
+    }
+    })
+  }
+}
+
+const handleReject = (Company_id) => {
+  //alert(Company_id);
+  if (Company_id) {
+    Axios.post('http://localhost:1337/api/rejectemployer', {
+      Company_id: Company_id
+    })
+    .then((response)=>{
+      if (response.data.message){
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: response.data.message || 'Employer rejected successfully',
+          comfirmButtonText: 'OK'
+        }).then(() => {
+          window.location = "/employers"; // Refresh the page after rejection
+        });
+      }
+    
+      else {
+        Swal.fire({
+          icon: 'Success',
+          title: 'User is blocked',
+      
+    }).then(() => {
+      window.location = "/employers"; // Refresh the page after rejection
+       });
+      }
+    })
+  }
+}
 
   return (
     <div className="page-content">
@@ -79,6 +140,30 @@ const ViewEmployer = () => {
   ) : (
     <span>No Image</span>
   )}
+</td>
+<td>
+  {item.status === 0 ? (
+    <>
+      <button
+        onClick={() => handleApprove(item.Company_id)}
+        className="btn btn-success"
+      >
+        Approve
+      </button>
+
+      <button
+        onClick={() => handleReject(item.Company_id)}
+        className="btn btn-danger"
+        style={{ marginLeft: "10px" }}
+      >
+        Reject
+      </button>
+    </>
+  ) : item.status === 1 ? (
+    <span className="text-success">Approved</span>
+  ) : item.status === 2 ? (
+    <span className="text-danger">Rejected</span>
+  ) : null}
 </td>
 
     

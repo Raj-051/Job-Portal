@@ -1,0 +1,29 @@
+/* Common button style */
+.btn.btn-sm {
+    width: 90px;        /* fixed clean size */
+    height: 40px;
+    border-radius: 6px;
+    display: block;
+    margin: 5px auto;    /* center horizontally */
+    text-align: center;
+}
+
+/* Edit button */
+.btn.btn-sm.btn-primary {
+    background-color: #16b116;
+}
+
+/* Delete button */
+.btn.btn-sm.btn-danger {
+    background-color: #c5424a;
+}
+
+.table.table-striped.table-hover{
+    text-align: center;
+    
+
+}
+
+tr{
+    text-align: center;
+}

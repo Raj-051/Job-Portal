@@ -1,11 +1,8 @@
 
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
-
-
-
-
 import "./viewjoblist.css";
+import {Link} from "react-router-dom";
 
 function Viewjoblist() {
   const deleteJob = (id) => {
@@ -63,7 +60,13 @@ useEffect(() => {
                   <td>{job.description}</td>
 
                   <td>
-                    <button className="edit-btn" >Edit </button>
+                    <Link
+to="/editjoblist"
+state={{Job_id:job.Job_id}}
+className="edit-btn"
+>
+Edit
+</Link>
 
                     <button className="delete-btn" onClick={() => deleteJob(job.Job_id)}>Delete</button>
                   </td>

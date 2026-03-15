@@ -14,6 +14,10 @@ import ManageProfile from "./pages/manageprofile";
 import AddJobCategory from "./pages/addjobcategory";
 import Addjoblist from "./pages/addjoblist";
 import Viewjoblist from "./pages/viewjoblist";
+import EditJobCategory from "./pages/editjobcategory";
+import Dashboard from "./pages/dashboard";
+import Editjoblist from "./pages/editjoblist";
+
 
 
 
@@ -56,10 +60,13 @@ function App() {
   <Route path="/logout" element={<Logout />} />
 
   {/* Dashboard Pages */}
+  <Route path="/dashboard" element={<DashboardLayout><Dashboard/></DashboardLayout>} />
   <Route path="/addjobcategory" element={<DashboardLayout><AddJobCategory /></DashboardLayout>} />
   <Route path="/viewjobcategory" element={<DashboardLayout><ViewJobcategory /></DashboardLayout>} />
+  <Route path="/editjobcategory" element={<DashboardLayout><EditJobCategory /></DashboardLayout>} />
   <Route path="/viewjoblist" element={<DashboardLayout><Viewjoblist /></DashboardLayout>} />
   <Route path="/addjoblist" element={<DashboardLayout><Addjoblist /></DashboardLayout>} />
+  <Route path="/editjoblist" element={<DashboardLayout><Editjoblist /></DashboardLayout>} />
   <Route path="/managecandidates" element={<DashboardLayout><ManageCandidates /></DashboardLayout>} />
   <Route path="/scheduleinterview" element={<DashboardLayout><ScheduleInterview /></DashboardLayout>} />
   <Route path="/chatwithjobseeker" element={<DashboardLayout><ChatWithJobSeeker /></DashboardLayout>} />

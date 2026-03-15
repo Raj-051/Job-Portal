@@ -10,7 +10,7 @@ function Addjoblist() {
         Axios.get("http://localhost:1337/api/getjobcategory")
           .then((response) => {
             setList(response.data);
-            alert(response.data);
+            
           })
           .catch((err) => {
             console.log(err);

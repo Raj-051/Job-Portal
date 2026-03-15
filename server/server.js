@@ -110,6 +110,42 @@ app.put("/api/updatejobcategory/:id", (req, res) => {
   });
 });
 
+//editjob category
+app.post("/api/editjobcategory", (req, res) => {
+  const Jobcat_id = req.body.Jobcat_id;
+  const query = "SELECT * FROM job_category WHERE Jobcat_id = ?";
+
+  con.query(query, [Jobcat_id], (err, results) => {
+    if (err) {
+      return res.status(500).send({ error: 'An error occurred while fetching the job category' });
+    }
+    if (results.length === 0) {
+      return res.status(404).send({ message: 'Job category not found' });
+    }
+    res.send(results[0]);
+  });
+});
+
+app.post("/api/updatejobcategory", (req, res) => {
+
+  const Jobcat_id = req.body.Jobcat_id;
+  const Jobcat_name = req.body.Jobcat_name;
+  const Jobcat_description = req.body.Jobcat_description;
+
+  const query = "UPDATE job_category SET Jobcat_name=?, Jobcat_description=? WHERE Jobcat_id=?";
+
+  con.query(query, [Jobcat_name, Jobcat_description, Jobcat_id], (err, result) => {
+
+    if (err) {
+      return res.status(500).send({ error: "Error updating category" });
+    }
+
+    res.send({ message: "Category updated successfully" });
+
+  });
+
+});
+
 //view job list
 app.get("/api/getjoblist", (req, res) => {
     const query = "SELECT a.Jobcat_name,b.* FROM job_category as a,Job as b where a.Jobcat_id =b.Jobcat_id";
@@ -130,6 +166,58 @@ app.delete("/api/deletejob/:id", (req, res) => {
 
         res.json({ message: "Deleted successfully" });
     });
+});
+
+//editjoblist
+app.post("/api/editjoblist",(req,res)=>{
+
+const Job_id = req.body.Job_id;
+
+const query = "SELECT * FROM job WHERE Job_id=?";
+
+con.query(query,[Job_id],(err,results)=>{
+
+if(err){
+return res.status(500).send({error:"Database error"});
+}
+
+res.send(results[0]);
+
+});
+
+});
+app.post("/api/updatejoblist",(req,res)=>{
+
+const {
+Job_id,
+job_title,
+Jobcat_id,
+skill,
+salary,
+location,
+end_date,
+description,
+jobtype
+} = req.body;
+
+const query = `
+UPDATE job
+SET job_title=?, Jobcat_id=?, skill=?, salary=?, location=?, end_date=?, description=?, jobtype=?
+WHERE Job_id=?`;
+
+con.query(
+query,
+[job_title,Jobcat_id,skill,salary,location,end_date,description,jobtype,Job_id],
+(err,result)=>{
+
+if(err){
+return res.status(500).send({error:"Update error"});
+}
+
+res.send({message:"Job updated successfully"});
+
+});
+
 });
 // ================== MULTER CONFIG ==================
 const storage = multer.diskStorage({
@@ -156,10 +244,9 @@ con.connect((err) => {
 });
 
 // ================== COMPANY SIGNUP ==================
-app.post("/api/signup", upload.single("id_proof"), (req, res) => {
-  try {
-    console.log("BODY:", req.body);
-    console.log("FILE:", req.file);
+app.post("/api/signup", upload.single("Id_proof"), (req, res) => {
+  
+  
 
     const Company_name = req.body.Company_name;
     const Contact_no = req.body.Contact_no;
@@ -189,44 +276,45 @@ app.post("/api/signup", upload.single("id_proof"), (req, res) => {
       });
     }
 
-    const query = `
-      INSERT INTO company
-      (Company_name, Contact_no, email, Password, location, website_URL, description, Id_proof, company_person_name, company_person_contact)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-
-    con.query(
-      query,
-      [
-        Company_name,
-        Contact_no,
-        email,
-        Password,
-        location,
-        website_URL,
-        description,
-        Id_proof,
-        company_person_name,
-        company_person_contact,
-      ],
-      (err, result) => {
-        if (err) {
-          console.log("Database Error:", err);
-          return res.status(500).send({
-            message: "Database error",
-          });
-        }
-
-        res.send({
-          message: "Company registered successfully",
-        });
+    const checkQuery = "SELECT * FROM company WHERE email=?";
+    con.query(checkQuery,[email],(err,results)=>{
+      if(err) {
+        return res.status(500).send({message:"error to check email"});
       }
-    );
-  } catch (error) {
-    console.log("Server Error:", error);
-    res.status(500).send({ message: "Server error" });
-  }
+      if(results.length>0){
+        return res.status(400).send({message:"email already exits"});
+      }
+
+      const query = `
+        INSERT INTO company
+        (Company_name, Contact_no, email, Password, location, website_URL, description, Id_proof, company_person_name, company_person_contact)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
+
+      con.query(
+        query,
+        [
+          Company_name,
+          Contact_no,
+          email,
+          Password,
+          location,
+          website_URL,
+          description,
+          Id_proof,
+          company_person_name,
+          company_person_contact,
+        ],
+        (err, result) => {
+          if(err) {
+            return res.status(500).send({message:"error to insert data"});
+          }
+          return res.status(200).send({message:"data inserted successfully",result});
+        }
+      );
+    });
 });
+
 //admin dynamic login
 app.get("/api/getemployers", (req, res) => {
   const sql = "SELECT * FROM company";
@@ -240,6 +328,275 @@ app.get("/api/getemployers", (req, res) => {
     res.json(result);
   });
 });
+
+app.post("/api/approveemployer", (req, res) => {
+  const { Company_id} = req.body;
+
+  const query = "UPDATE company SET status = 1 WHERE Company_id = ?";
+
+  con.query(query, [Company_id], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ message: "Database error" });
+    }
+    
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Company not found" });
+    }
+
+    res.json({ message: "Company approved successfully" });
+  });
+});
+
+app.post("/api/rejectemployer", (req, res) => {
+  const { Company_id} = req.body;
+
+  const query = "UPDATE company SET status = 2 WHERE Company_id = ?";
+
+  con.query(query, [Company_id], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ message: "Database error" });
+    }
+    
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Company not found" });
+    }
+
+    res.json({ message: "Company rejected successfully" });
+  });
+});
+
+//company login
+app.post("/api/companylogin", (req, res) => {
+
+  const { email, Password } = req.body;
+
+  const sql = "SELECT * FROM company WHERE email=? AND Password=?";
+
+  con.query(sql, [email, Password], (err, result) => {
+
+    if (err) {
+      return res.json({
+        status: "error",
+        message: "Database error"
+      });
+    }
+
+    if (result.length === 0) {
+      return res.json({
+        status: "error",
+        message: "Invalid Email or Password"
+      });
+    }
+
+    if (result[0].status != 1) {
+      return res.json({
+        status: "error",
+        message: "Your account has not been approved by admin"
+      });
+    }
+
+    res.json({
+      status: "success",
+      company: result[0]
+    });
+
+  });
+
+});
+//userlogin
+app.post("/api/userlogin", (req, res) => {
+
+  const { email, password } = req.body;
+
+  const sql = "SELECT * FROM job_seeker WHERE email=? AND password=?";
+
+  con.query(sql, [email, password], (err, result) => {
+
+    if (err) {
+      return res.json({
+        status: "error",
+        message: "Database error"
+      });
+    }
+
+    if (result.length > 0) {
+      res.json({
+        status: "success",
+        user: result[0]
+      });
+    } else {
+      res.json({
+        status: "error",
+        message: "Invalid Email or Password"
+      });
+    }
+
+  });
+});
+
+
+//user signup
+
+
+// USER SIGNUP API
+app.post("/api/usersignup", upload.single("Upload_photo"), (req, res) => {
+
+  const {
+    Name,
+    Contact_no,
+    email,
+    password,
+    Address,
+    Education,
+    Experience,
+    Projects
+  } = req.body;
+
+  const Upload_photo = req.file ? req.file.filename : "";
+
+  const sql = `
+  INSERT INTO job_seeker 
+  (Name, Contact_no, password, email, Address, Education, Experience, Projects, Upload_photo) 
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  con.query(
+  sql,
+  [Name,Contact_no,password,email,Address,Education,Experience,Projects,Upload_photo],
+  (err,result)=>{
+
+    if(err){
+      console.log(err);
+      return res.json({
+        status:"error",
+        message:"Database error"
+      });
+    }
+
+    res.json({
+      status:"success",
+      User_id: result.insertId
+    });
+
+});
+    }
+  );
+
+const PDFDocument = require("pdfkit");
+const fs = require("fs");
+
+app.get("/api/generate-resume/:id", (req, res) => {
+
+  const id = req.params.id;
+
+  const sql = "SELECT * FROM job_seeker WHERE User_id=?";
+
+  con.query(sql,[id],(err,result)=>{
+
+    if(err){
+      console.log(err);
+      return res.send("Database Error");
+    }
+
+    const user = result[0];
+
+    const filePath = path.join(__dirname,"public/resumes",`resume_${id}.pdf`);
+
+    const doc = new PDFDocument({margin:50});
+
+    const stream = fs.createWriteStream(filePath);
+
+    doc.pipe(stream);
+
+    // HEADER
+    doc
+      .fontSize(26)
+      .fillColor("#2c3e50")
+      .text(user.Name, {align:"center"});
+
+    doc.moveDown(0.5);
+
+    doc
+      .fontSize(12)
+      .fillColor("gray")
+      .text(`${user.email} | ${user.Contact_no}`, {align:"center"});
+
+    doc.moveDown(1);
+
+    // LINE
+    doc.moveTo(50,120).lineTo(550,120).stroke();
+
+    doc.moveDown(2);
+
+    // PROFILE SECTION
+    doc
+      .fontSize(16)
+      .fillColor("#2c3e50")
+      .text("PROFILE");
+
+    doc.moveDown(0.5);
+
+    doc
+      .fontSize(12)
+      .fillColor("black")
+      .text(`Address: ${user.Address}`);
+
+    doc.moveDown();
+
+    // EDUCATION
+    doc
+      .fontSize(16)
+      .fillColor("#2c3e50")
+      .text("EDUCATION");
+
+    doc.moveDown(0.5);
+
+    doc
+      .fontSize(12)
+      .text(user.Education);
+
+    doc.moveDown();
+
+    // EXPERIENCE
+    doc
+      .fontSize(16)
+      .fillColor("#2c3e50")
+      .text("EXPERIENCE");
+
+    doc.moveDown(0.5);
+
+    doc
+      .fontSize(12)
+      .text(user.Experience);
+
+    doc.moveDown();
+
+    // PROJECTS
+    doc
+      .fontSize(16)
+      .fillColor("#2c3e50")
+      .text("PROJECTS");
+
+    doc.moveDown(0.5);
+
+    doc
+      .fontSize(12)
+      .text(user.Projects);
+
+    doc.end();
+
+    stream.on("finish", ()=>{
+      res.sendFile(filePath);
+    });
+
+  });
+
+});
+
+
+
 
 const PORT = 1337;
 

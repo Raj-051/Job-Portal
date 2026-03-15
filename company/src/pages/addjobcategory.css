@@ -20,7 +20,7 @@
 /* Title */
 .card h3 {
   font-weight: 600;
-  color: #1f2d3d;
+ 
   text-align: center;
   margin-bottom: 25px;
 }
@@ -29,13 +29,14 @@
 .form-label {
   font-weight: 500;
   margin-bottom: 6px;
-  color: #374151;
+
 }
 
 /* Inputs & Textarea */
 .form-control {
   border-radius: 6px;
   padding: 10px;
+  color: black;
   border: 1px solid #d1d5db;
   font-size: 14px;
   transition: all 0.3s ease;
@@ -48,7 +49,7 @@
 }
 
 /* Button Styling */
-.btn-success {
+.btn-Success {
   width: 100%;
   padding: 10px;
   font-size: 15px;
@@ -57,7 +58,7 @@
 }
 
 /* Button Hover */
-.btn-success:hover {
+.btn-Success:hover {
   background-color: #157347 !important;
   transform: translateY(-1px);
 }
@@ -67,4 +68,23 @@
   .card {
     padding: 20px !important;
   }
+}
+
+.btn.btn-Success{
+  background-color: #28a745;
+  width: 100%;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.card.shadow-sm.p-4{
+  background-color: white;
+  height: 100%;
+  width: 100%;
 }

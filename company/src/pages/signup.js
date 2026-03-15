@@ -36,7 +36,7 @@ function Company() {
   formData.append("location", location);
   formData.append("website_URL", website_URL);
   formData.append("description", description);
-  formData.append("id_proof", Id_proof);
+  formData.append("Id_proof", Id_proof);
   formData.append("company_person_name", company_person_name);
   formData.append("company_person_contact", company_person_contact);
     // must match backend multer name

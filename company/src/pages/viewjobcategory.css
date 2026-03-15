@@ -88,7 +88,7 @@
 }
 
 .edit-btn {
-  background: linear-gradient(135deg, #28a745, #20c997);
+   background-color: green;
   color: white;
   border: none;
   padding: 10px 18px;
@@ -137,4 +137,30 @@
 /* Click effect */
 .delete-btn:active {
   transform: scale(0.95);
+}
+
+.Success{
+  background-color: #28a745;
+  width: 70px;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn.btn-danger{
+  background-color: #dc3545;
+  width: 70px;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }

@@ -1,0 +1,184 @@
+/* ===== HEADER ===== */
+
+.header-area{
+width:100%;
+background:#0f172a;
+position:sticky;
+top:0;
+z-index:999;
+}
+
+.main-header-area{
+max-width:1200px;
+margin:auto;
+padding:15px 20px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+}
+
+/* ===== LOGO ===== */
+
+.logo img{
+height:45px;
+}
+
+/* ===== MENU ===== */
+
+.main-menu ul{
+display:flex;
+gap:35px;
+list-style:none;
+margin:0;
+padding:0;
+align-items:center;
+}
+
+.main-menu ul li{
+position:relative;
+}
+
+.main-menu ul li a,
+.main-menu ul li span{
+color:#ffffff;
+text-decoration:none;
+font-size:16px;
+font-weight:500;
+cursor:pointer;
+transition:0.3s;
+}
+
+
+
+/* ===== DROPDOWN ===== */
+
+.submenu{
+position:absolute;
+top:35px;
+left:0;
+background:#1e293b;
+width:180px;
+border-radius:6px;
+display:none;
+flex-direction:column;
+}
+
+.submenu li{
+padding:0;
+}
+
+.submenu li a{
+display:block;
+padding:10px 15px;
+font-size:14px;
+}
+
+.submenu li a:hover{
+background:#334155;
+}
+
+/* show dropdown */
+
+.dropdown:hover .submenu{
+display:block;
+}
+
+/* ===== RIGHT BUTTONS ===== */
+
+.header-buttons{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+/* login button */
+
+.login-btn{
+
+color:#fff;
+padding:9px 20px;
+border-radius:6px;
+text-decoration:none;
+font-weight:500;
+white-space:nowrap;
+transition:0.3s;
+}
+
+.LOgin-btn{
+color:#ffffff;
+text-decoration:none;
+font-size:16px;
+font-weight:500;
+cursor:pointer;
+transition:0.3s;
+background-color: #0f172a;
+}
+
+.LOgin-btn:hover{
+    
+background:#111;
+color:#00ff84;
+}
+
+.resume-btn{
+    
+color:#ffffff;
+text-decoration:none;
+font-size:16px;
+font-weight:500;
+cursor:pointer;
+transition:0.3s;
+background-color: #0f172a;
+}
+
+.dashboard-btn{
+    
+color:#ffffff;
+text-decoration:none;
+font-size:16px;
+font-weight:500;
+cursor:pointer;
+transition:0.3s;
+background-color: #0f172a;
+
+}
+.login-btn:hover{
+background:#111;
+color:#00ff84;
+}
+
+.signup-btn{
+
+color:#fff;
+padding:9px 20px;
+border-radius:6px;
+text-decoration:none;
+font-weight:500;
+white-space:nowrap;
+transition:0.3s;
+}
+
+.signup-btn:hover{
+background:#111;
+color:#00ff55;
+}
+
+
+/* ===== RESPONSIVE ===== */
+
+@media(max-width:900px){
+
+.main-menu{
+display:none;
+}
+
+.header-buttons{
+gap:10px;
+
+}
+
+.post-btn{
+padding:8px 15px;
+}
+
+}
