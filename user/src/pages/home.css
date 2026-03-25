@@ -32,6 +32,9 @@ margin:10px 0;
 
 .hero-buttons{
 margin-top:20px;
+width: 60%;
+display: flex;
+flex-direction: row;
 }
 
 .btn-primary{
@@ -84,6 +87,7 @@ color:white;
 padding:12px 25px;
 border:none;
 border-radius:6px;
+width: 10%;
 }
 
 /* CATEGORIES */
@@ -139,6 +143,7 @@ background:#ff5a3c;
 color:white;
 padding:10px 20px;
 border:none;
+width: 15%;
 border-radius:6px;
 }
 
@@ -178,6 +183,7 @@ color:white;
 
 .cta-box button{
 margin-top:15px;
+background-color: blue
 }
 
 /* RESPONSIVE */
@@ -228,11 +234,12 @@ flex-direction:column;
   border-radius:6px;
   text-decoration:none;
   font-weight:500;
+  width: 50%;
 }
 
 .browse-btn:hover{
   background:#00d363;
-  color:white;
+  color:green;
 }
 
 .companies-grid{
@@ -329,4 +336,104 @@ flex-direction:column;
 .info span{
   font-weight:600;
   color:#333;
+}
+
+/* ================= JOB SEARCH ================= */
+
+.job-search-section{
+  background:#fff;
+  padding:25px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.08);
+  border-radius:10px;
+  margin:30px auto;
+  width:90%;
+  max-width:1100px;
+}
+
+/* CONTAINER */
+.job-search-container{
+  display:flex;
+  gap:15px;
+  align-items:center;
+}
+
+/* INPUT + SELECT */
+.job-search-container input,
+.job-search-container select{
+  flex:1;
+  padding:12px 15px;
+  border:1px solid #ddd;
+  border-radius:6px;
+  font-size:14px;
+  outline:none;
+  transition:0.3s;
+}
+
+/* FOCUS EFFECT */
+.job-search-container input:focus,
+.job-search-container select:focus{
+  border-color:#ff5a3c;
+  box-shadow:0 0 5px rgba(255,90,60,0.3);
+}
+
+/* BUTTON */
+.btn-search{
+  background:#ff5a3c;
+  color:white;
+  padding:12px 25px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:500;
+  transition:0.3s;
+}
+
+
+.bar {
+  display: flex;
+  justify-content: center;   /* horizontal center */
+  align-items: center;       /* vertical alignment */
+  gap: 15px;                 /* space between elements */
+  margin-top: 40px;          /* spacing from top */
+  flex-wrap: wrap;           /* responsive */
+}
+
+/* Input + Select styling */
+.bar input,
+.bar select {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  min-width: 180px;
+}
+
+/* Button styling */
+.btn-search {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.btn-search:hover {
+  background-color: #0056b3;
+}
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:768px){
+
+  .job-search-container{
+    flex-direction:column;
+  }
+
+  .btn-search{
+    width:100%;
+  }
+
 }

@@ -1,110 +1,93 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Axios from "axios";
 import "./browsejob.css";
 
 function Browsejob() {
 
-  const jobs = [
-    {
-      id: 1,
-      title: "Software Engineer",
-      company: "Tech Corp",
-      location: "California",
-      type: "Part-time",
-      logo: "/img/svg_icon/1.svg"
-    },
-    {
-      id: 2,
-      title: "Digital Marketer",
-      company: "Marketing Ltd",
-      location: "New York",
-      type: "Full-time",
-      logo: "/img/svg_icon/2.svg"
-    },
-    {
-      id: 3,
-      title: "Wordpress Developer",
-      company: "Web Studio",
-      location: "Texas",
-      type: "Part-time",
-      logo: "/img/svg_icon/3.svg"
-    },
-    {
-      id: 4,
-      title: "Visual Designer",
-      company: "Creative Agency",
-      location: "Los Angeles",
-      type: "Full-time",
-      logo: "/img/svg_icon/4.svg"
+  const [jobs, setJobs] = useState([]); // ✅ define state
+  const [appliedJobs, setAppliedJobs] = useState([]);
+
+  useEffect(() => {
+  const user = JSON.parse(sessionStorage.getItem("mydata"));
+
+  // get jobs
+  Axios.get("http://localhost:1337/api/getjoblist")
+    .then((response) => {
+      setJobs(response.data);
+    });
+
+  // get applied jobs
+  if (user) {
+    Axios.get(`http://localhost:1337/api/getappliedjobs/${user.User_id}`)
+      .then((res) => {
+        const appliedIds = res.data.map(item => item.Job_id);
+        setAppliedJobs(appliedIds);
+      });
+  }
+
+}, []);
+
+  const applyJob = (job) => {
+
+    const user = JSON.parse(sessionStorage.getItem("mydata"));
+
+    if (!user) {
+      alert("Please login first");
+      return;
     }
-  ];
+
+    // If backend/job table has Company_id, it will be used.
+    // Otherwise we still send 0 and let backend resolve it from the job row.
+    const Company_id = job?.Company_id || 0;
+
+    Axios.post("http://localhost:1337/api/applyjob", {
+      Job_id: job.Job_id,
+      User_id: user.User_id,
+      Company_id
+    })
+    .then((res) => {
+  alert("Applied Successfully!");
+      console.log("JOB DATA:", job);
+      
+  // ✅ update UI instantly
+  setAppliedJobs((prev) => [...prev, job.Job_id]);
+
+      
+    })
+    .catch((err) => {
+      console.log(err);
+      alert("Error applying job");
+    });
+  };
 
   return (
     <div className="browsejob-page">
+      <div className="job-cards">
 
-      {/* Banner */}
-      <section className="browsejob-banner">
-        <h1>4536+ Jobs Available</h1>
-      </section>
+        {jobs.map((job) => (   // ✅ correct variable
+          <div className="job-card" key={job.Job_id}>
 
-      <div className="container browsejob-container">
+            <div className="job-card-left">
+              <img src="/img/svg_icon/1.svg" alt="" />
 
-        {/* Sidebar Filter */}
-        <aside className="filter-sidebar">
-          <h3>Filter Jobs</h3>
-
-          <input type="text" placeholder="Search keyword" />
-
-          <select>
-            <option>Location</option>
-            <option>India</option>
-            <option>USA</option>
-          </select>
-
-          <select>
-            <option>Category</option>
-            <option>IT</option>
-            <option>Marketing</option>
-          </select>
-
-          <select>
-            <option>Experience</option>
-            <option>Fresher</option>
-            <option>1-3 Years</option>
-          </select>
-
-          <select>
-            <option>Job Type</option>
-            <option>Full-time</option>
-            <option>Part-time</option>
-          </select>
-
-          <button className="btn-reset">Reset</button>
-        </aside>
-
-        {/* Job Listing */}
-        <section className="job-listing">
-          <div className="job-listing-header">
-            <h2>Job Listings</h2>
-            <select>
-              <option>Most Recent</option>
-            </select>
-          </div>
-
-          <div className="job-cards">
-            {jobs.map((job) => (
-              <div className="job-card" key={job.id}>
-                <div className="job-card-left">
-                  <img src={job.logo} alt={job.company} />
-                  <div className="job-info">
-                    <h4>{job.title}</h4>
-                    <p>{job.company} • {job.location} • {job.type}</p>
-                  </div>
-                </div>
-                <button className="btn-apply">Apply Now</button>
+              <div className="job-info">
+                <h4>{job.job_title}</h4>
+                <p>
+                  {job.Jobcat_name} • {job.location} • {job.jobtype}
+                </p>
               </div>
-            ))}
+            </div>
+
+            <button 
+  className="btn-apply"
+  onClick={() => applyJob(job)}
+  disabled={appliedJobs.includes(job.Job_id)}
+>
+  {appliedJobs.includes(job.Job_id) ? "Applied" : "Apply Now"}
+</button>
+
           </div>
-        </section>
+        ))}
 
       </div>
     </div>

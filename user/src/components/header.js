@@ -13,7 +13,8 @@ function Header() {
 
   return (
     <header className="header-area">
-      <div className="main-header-area">
+
+      <div className="header-container">
 
         {/* Logo */}
         <div className="logo">
@@ -25,35 +26,11 @@ function Header() {
         {/* Navigation */}
         <nav className="main-menu">
           <ul>
-
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-
-            <li>
-              <Link to="/aboutas">About Us</Link>
-            </li>
-
-            <li>
-              <Link to="/browsejob">Browse Job</Link>
-            </li>
-
-            <li>
-              <Link to="/candidates">Candidates</Link>
-            </li>
-
-            <li className="dropdown">
-              <span>Blog</span>
-              <ul className="submenu">
-                <li><Link to="/blog">Blog</Link></li>
-                <li><Link to="/singleblog">Single Blog</Link></li>
-              </ul>
-            </li>
-
-            <li>
-              <Link to="/contact">Contact</Link>
-            </li>
-
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/About">About Us</Link></li>
+            <li><Link to="/browsejob">Browse Job</Link></li>
+            <li><Link to="/candidates">Candidates</Link></li>
+            <li><Link to="/Contact">Contact</Link></li>
           </ul>
         </nav>
 
@@ -62,26 +39,19 @@ function Header() {
 
           {user1 === null ? (
             <>
-              <Link to="/login" className="login-btn">
-                Login
-              </Link>
-
-              <Link to="/signup" className="signup-btn">
-                Sign Up
-              </Link>
+              <Link to="/login" className="login-btn">Login</Link>
+              <Link to="/signup" className="signup-btn">Sign Up</Link>
             </>
           ) : (
             <>
-            
-
               <a
-            href={`http://localhost:1337/api/generate-resume/${user1.User_id}`}
-            target="_blank"
-            rel="noreferrer"
-            className="resume-btn"
-          >
-            Resume
-          </a>
+                href={`http://localhost:1337/api/generate-resume/${user1.User_id}`}
+                target="_blank"
+                rel="noreferrer"
+                className="resume-btn"
+              >
+                Resume
+              </a>
 
               <button className="logout-btn" onClick={Logout}>
                 Logout
@@ -92,6 +62,7 @@ function Header() {
         </div>
 
       </div>
+
     </header>
   );
 }

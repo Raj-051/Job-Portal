@@ -1,85 +1,77 @@
-/* Page background */
 .signup-page{
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:linear-gradient(135deg,#3aa6d0,#00c6d7);
-  font-family:Arial, Helvetica, sans-serif;
-}
-
-/* Form container */
-.signup-page form{
-  width:650px;
-  background:white;
-  padding:35px;
-  border-radius:10px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.2);
-
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:15px;
+    min-height:100vh;
+    background:linear-gradient(rgba(48, 50, 50, 0.13));
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    padding-top:60px;
+    color: black;
 }
 
 /* Title */
+
 .signup-page h2{
-  position:absolute;
-  left:150px;
-  color:#333;
-  font-size:32px;
+    text-align:center;
+    font-size:32px;
+    color:#333;
+    margin-bottom:25px;
 }
 
-/* Inputs */
-.signup-page input,
-.signup-page textarea{
-  width:100%;
-  padding:12px;
-  border:1px solid #ccc;
-  border-radius:6px;
-  font-size:14px;
-  transition:0.3s;
+/* Form */
+
+.signup-page form{
+    width:700px;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.2);
 }
 
-/* Focus effect */
-.signup-page input:focus,
-.signup-page textarea:focus{
-  border-color:#2196f3;
-  outline:none;
-  box-shadow:0 0 5px rgba(33,150,243,0.4);
+/* two input row */
+
+.two-column{
+    display:flex;
+    gap:20px;
 }
 
-/* Textarea full width */
-.signup-page textarea{
-  grid-column:span 2;
-  resize:none;
-  height:70px;
+/* form group */
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:15px;
+    width:100%;
 }
 
-/* Upload label */
-.signup-page label{
-  grid-column:span 2;
-  font-weight:500;
+label{
+    font-weight:600;
+    margin-bottom:5px;
 }
 
-/* File input */
-.signup-page input[type="file"]{
-  grid-column:span 2;
-  border:none;
+input, textarea{
+    padding:10px;
+    border:1px solid black;
+    border-radius:5px;
 }
 
-/* Button */
-.signup-page button{
-  grid-column:span 2;
-  padding:12px;
-  background:#2196f3;
-  color:white;
-  border:none;
-  border-radius:6px;
-  font-size:16px;
-  cursor:pointer;
-  transition:0.3s;
+textarea{
+    height:80px;
 }
 
-.signup-page button:hover{
-  background:#1976d2;
+/* button */
+
+button{
+    width:100%;
+    padding:12px;
+    background:#2d89ef;
+    border:none;
+    color:white;
+    font-size:16px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#1c5db8;
 }

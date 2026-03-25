@@ -8,10 +8,15 @@ import Home from "./pages/home";
 import Browsejob from "./pages/browsejob";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
-import UserDashboard from "./pages/UserDashboard";  
+import UserDashboard from "./pages/UserDashboard"; 
+import Resume from "./pages/Resume";
+import UploadResume from "./pages/UploadResume";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
 function App() {
   return (
+    
     <Router>
 
       <Routes>
@@ -28,9 +33,13 @@ function App() {
               <Header />
 
               <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<Home/>} />
+                <Route path="/About" element={<About/>} />
                 <Route path="/browsejob" element={<Browsejob />} />
+                <Route path="/Contact" element={<Contact />} />
+                <Route path="/UploadResume" element={<UploadResume/>} />
                 <Route path="/UserDashboard" element={<UserDashboard />} />
+                <Route path="/Resume" element ={<Resume/>} />
 
               </Routes>
 

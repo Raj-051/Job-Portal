@@ -23,10 +23,11 @@ const con = mysql.createConnection({
 app.post("/api/jobcategories", (req, res) => {
     const Jobcat_name = req.body.Jobcat_name;
     const Jobcat_description = req.body.Jobcat_description;
+    const Company_id = req.body.Company_id;
 
-    const query = `INSERT INTO job_category (Jobcat_name, Jobcat_description) VALUES (?, ?)`;
+    const query = `INSERT INTO job_category (Jobcat_name, Jobcat_description, Company_id) VALUES (?, ?, ?)`;
 
-    con.query(query, [Jobcat_name, Jobcat_description], (err, result) => {
+    con.query(query, [Jobcat_name, Jobcat_description, Company_id], (err, result) => {
         if (err) {
             return res.status(500).send({
                 message: "Error adding job category",
@@ -49,11 +50,12 @@ app.post("/api/joblist", (req, res) => {
     const end_date = req.body.end_date;
     const description = req.body.description;
     const jobtype = req.body.jobtype;
+    const Company_id = req.body.Company_id;
     
 
-    const query = `INSERT INTO job (job_title, Jobcat_id, skill, salary, end_date, description, location, jobtype) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    const query = `INSERT INTO job (job_title, Jobcat_id, skill, salary, end_date, description, location, jobtype, Company_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-    con.query(query, [job_title,Jobcat_id, skill, salary, end_date, description, location, jobtype], (err, result) => {
+    con.query(query, [job_title,Jobcat_id, skill, salary, end_date, description, location, jobtype, Company_id], (err, result) => {
         if (err) {
             return res.status(500).send({
                 message: "Error adding job",
@@ -69,10 +71,16 @@ app.post("/api/joblist", (req, res) => {
 
 //job category 
 app.get("/api/getjobcategory", (req, res) => {
-    const query = "SELECT * FROM job_category";
-    con.query(query, (err, results) => {
-        res.send(results);
-    });
+  const query = "SELECT * FROM job_category";
+
+  con.query(query, (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Database error");
+    }
+
+    res.send(results);
+  });
 });
 
 app.delete("/api/deletejobcategory/:id", (req, res) => {
@@ -227,7 +235,7 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
   },
-});
+}); 
 
 const upload = multer({ storage: storage });
 
@@ -451,41 +459,58 @@ app.post("/api/usersignup", upload.single("Upload_photo"), (req, res) => {
     Address,
     Education,
     Experience,
-    Projects
+    Skills,
+    Company_name,
+    Post,
+    Duration,
+    Work_description
   } = req.body;
 
   const Upload_photo = req.file ? req.file.filename : "";
 
   const sql = `
-  INSERT INTO job_seeker 
-  (Name, Contact_no, password, email, Address, Education, Experience, Projects, Upload_photo) 
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO job_seeker 
+    (Name, Contact_no, password, email, Address, Education, Experience,Upload_photo, company_name,post,Duration,skills,Work_description) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
   con.query(
-  sql,
-  [Name,Contact_no,password,email,Address,Education,Experience,Projects,Upload_photo],
-  (err,result)=>{
+    sql,
+    [
+      Name,
+      Contact_no,
+      password,
+      email,
+      Address,
+      Education,
+      Experience,
+      Upload_photo,
+      Company_name || "",
+      Post || "",
+      Duration || "",
+      Work_description || "",
+      Skills
 
-    if(err){
-      console.log(err);
-      return res.json({
-        status:"error",
-        message:"Database error"
+    
+    ],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.json({
+          status: "error",
+          message: "Database error"
+        });
+      }
+
+      res.json({
+        status: "success",
+        User_id: result.insertId
       });
     }
-
-    res.json({
-      status:"success",
-      User_id: result.insertId
-    });
-
-});
-    }
   );
+});
 
 const PDFDocument = require("pdfkit");
-const fs = require("fs");
 
 app.get("/api/generate-resume/:id", (req, res) => {
 
@@ -493,110 +518,197 @@ app.get("/api/generate-resume/:id", (req, res) => {
 
   const sql = "SELECT * FROM job_seeker WHERE User_id=?";
 
-  con.query(sql,[id],(err,result)=>{
+  con.query(sql, [id], (err, result) => {
 
-    if(err){
-      console.log(err);
-      return res.send("Database Error");
-    }
+    if (err) return res.send("Database Error");
+    if (result.length === 0) return res.send("User not found");
 
     const user = result[0];
 
-    const filePath = path.join(__dirname,"public/resumes",`resume_${id}.pdf`);
+    const doc = new PDFDocument({ margin: 30 });
 
-    const doc = new PDFDocument({margin:50});
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `inline; filename=resume_${id}.pdf`);
 
-    const stream = fs.createWriteStream(filePath);
+    doc.pipe(res);
 
-    doc.pipe(stream);
+    // ===== LEFT SIDEBAR =====
+    doc.rect(0, 0, 180, 800).fill("#f0f0f0");
 
-    // HEADER
+    // PHOTO
+    if (user.Upload_photo) {
+      try {
+        const imgPath = path.join(__dirname, "public", user.Upload_photo);
+        doc.image(imgPath, 40, 40, { width: 100, height: 100 });
+      } catch (e) {}
+    }
+
+    // NAME
     doc
-      .fontSize(26)
-      .fillColor("#2c3e50")
-      .text(user.Name, {align:"center"});
-
-    doc.moveDown(0.5);
-
-    doc
-      .fontSize(12)
-      .fillColor("gray")
-      .text(`${user.email} | ${user.Contact_no}`, {align:"center"});
-
-    doc.moveDown(1);
-
-    // LINE
-    doc.moveTo(50,120).lineTo(550,120).stroke();
-
-    doc.moveDown(2);
-
-    // PROFILE SECTION
-    doc
+      .fillColor("#000")
       .fontSize(16)
-      .fillColor("#2c3e50")
-      .text("PROFILE");
+      .text(user.Name, 20, 160, { width: 140, align: "center" });
 
-    doc.moveDown(0.5);
+    // CONTACT
+    let yPosition = 225;
+
+doc
+  .fontSize(10)
+  .fillColor("#000")
+  .text(`Address: ${user.Address}`, 20, yPosition, {
+    width: 140,
+    lineGap: 4
+  });
+
+yPosition += 35;
+
+doc.text(`Phone: ${user.Contact_no}`, 20, yPosition, {
+  width: 140
+});
+
+yPosition += 20;
+
+doc.text(`Email: ${user.email}`, 20, yPosition, {
+  width: 140
+});
+
+    // SKILLS
+    doc.text("Skills", 20, 320);
+    doc.moveTo(20, 335).lineTo(160, 335).stroke();
+
+    doc.text(user.skills || "N/A", 20, 345, {
+      width: 140,
+      lineGap: 4
+    });
+
+    // ===== RIGHT SIDE =====
+    let startX = 200;
+
+    // SUMMARY
+    doc
+      .fontSize(14)
+      .fillColor("#333")
+      .text("Professional Summary", startX, 40);
+
+    doc.moveTo(startX, 60).lineTo(550, 60).stroke();
 
     doc
-      .fontSize(12)
-      .fillColor("black")
-      .text(`Address: ${user.Address}`);
-
-    doc.moveDown();
-
-    // EDUCATION
-    doc
-      .fontSize(16)
-      .fillColor("#2c3e50")
-      .text("EDUCATION");
-
-    doc.moveDown(0.5);
-
-    doc
-      .fontSize(12)
-      .text(user.Education);
-
-    doc.moveDown();
+      .fontSize(11)
+      .text(
+        "Motivated MERN Stack Developer with experience in building full-stack web applications including job portals. Skilled in React, Node.js, Express, and MySQL. Passionate about developing scalable and user-friendly applications.",
+        startX,
+        70,
+        { width: 350 }
+      );
 
     // EXPERIENCE
     doc
-      .fontSize(16)
-      .fillColor("#2c3e50")
-      .text("EXPERIENCE");
+      .fontSize(14)
+      .text("Work Experience", startX, 140);
 
-    doc.moveDown(0.5);
-
-    doc
-      .fontSize(12)
-      .text(user.Experience);
-
-    doc.moveDown();
-
-    // PROJECTS
-    doc
-      .fontSize(16)
-      .fillColor("#2c3e50")
-      .text("PROJECTS");
-
-    doc.moveDown(0.5);
+    doc.moveTo(startX, 160).lineTo(550, 160).stroke();
 
     doc
-      .fontSize(12)
-      .text(user.Projects);
+      .fontSize(11)
+      .text(`Company: ${user.company_name || "-"}`, startX, 170);
+
+    doc.text(`Role: ${user.post || "-"}`, startX, 190);
+    doc.text(`Duration: ${user.Duration || "-"}`, startX, 210);
+
+    doc.text(
+      "Developed a Job Portal using MERN stack with features like authentication, job posting, job application, and resume generation.",
+      startX,
+      230,
+      { width: 350 }
+    );
+
+    // EDUCATION
+    doc
+      .fontSize(14)
+      .text("Education", startX, 300);
+
+    doc.moveTo(startX, 320).lineTo(550, 320).stroke();
+
+    doc
+      .fontSize(11)
+      .text(user.Education, startX, 330, { width: 350 });
 
     doc.end();
+  });
+});
+//apply joblist
+app.post("/api/applyjob", (req, res) => {
+  const { Job_id, User_id } = req.body;
 
-    stream.on("finish", ()=>{
-      res.sendFile(filePath);
+  // ✅ Check already applied
+  const checkSql = "SELECT * FROM apply_job WHERE Job_id=? AND User_id=?";
+
+  con.query(checkSql, [Job_id, User_id], (err, result) => {
+
+    if (err) {
+      console.log("CHECK ERROR:", err);
+      return res.status(500).send("Database error");
+    }
+
+    if (result.length > 0) {
+      return res.status(400).send("Already Applied");
+    }
+
+    // ✅ Always resolve Company_id from the job table
+    // (prevents issues where frontend sends `0`/missing Company_id)
+    const resolveCompanyIdSql = "SELECT Company_id FROM job WHERE Job_id = ?";
+
+    // ✅ Insert into DB
+    const insertSql = `
+      INSERT INTO apply_job
+      (Job_id, User_id, Company_id, Apply_date, Status)
+      VALUES (?, ?, ?, NOW(), 0)
+    `;
+
+    con.query(resolveCompanyIdSql, [Job_id], (err, jobRows) => {
+      if (err) {
+        console.log("RESOLVE COMPANY_ID ERROR:", err);
+        return res.status(500).send("Database error");
+      }
+
+      const companyFromJob = jobRows?.[0]?.Company_id;
+      if (companyFromJob === null || companyFromJob === undefined) {
+        return res.status(400).send("Company_id not found for this job");
+      }
+
+      con.query(
+        insertSql,
+        [Job_id, User_id, companyFromJob],
+        (err, result) => {
+          if (err) {
+            console.log("INSERT ERROR:", err); // 🔥 CHECK THIS
+            return res.status(500).send("Insert error");
+          }
+          return res.send("Applied Successfully");
+        }
+      );
     });
 
   });
-
 });
 
 
+app.get("/api/getappliedjobs/:userId", (req, res) => {
 
+  const userId = req.params.userId;
+
+  const sql = "SELECT Job_id, Company_id FROM apply_job WHERE User_id=?";
+
+  con.query(sql, [userId], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Database error");
+    }
+
+    res.send(result);
+  });
+
+});
 
 const PORT = 1337;
 

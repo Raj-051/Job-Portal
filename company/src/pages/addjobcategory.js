@@ -9,6 +9,8 @@ function jobcatadd() {
   const Jobcat_name = document.getElementById("Jobcat_name").value;
   
   const Jobcat_description = document.getElementById("Jobcat_description").value;
+  const company = JSON.parse(sessionStorage.getItem("mydata"));
+  const Company_id = company?.Company_id;
 
   if (!Jobcat_name || !Jobcat_description) {
     Swal.fire({
@@ -18,10 +20,20 @@ function jobcatadd() {
     });
     return;
   }
+
+  if (!Company_id) {
+        Swal.fire({
+          icon: "error",
+          title: "Company not logged in",
+          text: "Please login as company again before adding a job.",
+        });
+        return;
+      }
   
   Axios.post("http://localhost:1337/api/jobcategories", {
     Jobcat_name: Jobcat_name,
-    Jobcat_description: Jobcat_description
+    Jobcat_description: Jobcat_description,
+    Company_id: Company_id
   }).then((response) => {
     Swal.fire({
       icon: "success",

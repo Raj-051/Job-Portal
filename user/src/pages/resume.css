@@ -1,0 +1,161 @@
+/* PAGE BACKGROUND */
+body {
+  background: #f4f6f9;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* MAIN CONTAINER */
+.resume-container {
+  width: 800px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 30px 40px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  border-radius: 10px;
+}
+
+/* HEADER */
+.resume-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* PROFILE IMAGE */
+.resume-photo {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #007bff;
+}
+
+/* NAME */
+.resume-header h1 {
+  margin: 0;
+  font-size: 28px;
+  color: #2c3e50;
+}
+
+/* CONTACT */
+.resume-header p {
+  margin: 3px 0;
+  color: #555;
+  font-size: 14px;
+}
+
+/* LINE */
+hr {
+  margin: 20px 0;
+  border: none;
+  border-top: 2px solid #eee;
+}
+
+/* SECTION */
+.resume-section {
+  margin-bottom: 20px;
+}
+
+/* SECTION TITLE */
+.resume-section h2 {
+  font-size: 18px;
+  color: #007bff;
+  margin-bottom: 8px;
+  border-left: 4px solid #007bff;
+  padding-left: 10px;
+}
+
+/* TEXT */
+.resume-section p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* EXPERIENCE LABELS */
+.resume-section b {
+  color: #000;
+}
+
+/* DOWNLOAD BUTTON */
+.download-btn {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.download-btn button {
+  background: #007bff;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.download-btn button:hover {
+  background: #0056b3;
+}
+
+/* LEFT SIDEBAR */
+.resume-sidebar {
+  width: 250px;
+  background: #f2f2f2;
+  padding: 20px;
+}
+
+/* NAME CENTER */
+.resume-sidebar h1 {
+  text-align: center;
+  font-size: 22px;
+  margin-top: 10px;
+}
+
+/* PHOTO CENTER */
+.resume-photo {
+  display: block;
+  margin: 0 auto;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+}
+
+/* SECTION TITLE */
+.sidebar-title {
+  margin-top: 20px;
+  font-size: 16px;
+  border-bottom: 2px solid #000;
+  padding-bottom: 5px;
+}
+
+/* CONTACT BLOCK */
+.contact-info {
+  margin-top: 10px;
+}
+
+/* EACH LINE */
+.contact-info p {
+  font-size: 14px;
+  margin: 8px 0;
+  line-height: 1.5;
+  word-break: break-word; /* fixes long email */
+}
+
+/* PRINT FIX (IMPORTANT FOR PDF) */
+@media print {
+  body {
+    background: white;
+  }
+
+  .resume-container {
+    box-shadow: none;
+    margin: 0;
+    width: 100%;
+  }
+
+  .download-btn {
+    display: none;
+  }
+}
