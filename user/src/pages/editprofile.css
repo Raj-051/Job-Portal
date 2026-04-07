@@ -1,0 +1,110 @@
+/* PAGE CONTAINER */
+.resume-container {
+  max-width: 850px;
+  margin: 40px auto;
+  padding: 30px 40px;
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+  border-radius: 6px;
+  font-family: "Segoe UI", sans-serif;
+  color: #222;
+}
+
+/* HEADER */
+.resume-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* PROFILE IMAGE */
+.resume-photo {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+/* HEADER TEXT */
+.resume-header p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+/* LINE */
+hr {
+  margin: 20px 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+/* SECTION */
+.resume-section {
+  margin-bottom: 20px;
+}
+
+/* SECTION TITLE */
+.resume-section h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+  color: #111;
+}
+
+/* TEXT */
+.resume-section p {
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 4px 0;
+}
+
+/* BUTTON CONTAINER */
+.download-btn {
+  margin-top: 25px;
+  display: flex;
+  gap: 10px;
+}
+
+/* DOWNLOAD BUTTON */
+.download-btn button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: #000;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* HOVER */
+.download-btn button:hover {
+  background: #333;
+}
+
+/* EDIT BUTTON */
+.edit-btn {
+  background: #555 !important;
+}
+
+.edit-btn:hover {
+  background: #222 !important;
+}
+
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .resume-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .resume-photo {
+    width: 80px;
+    height: 80px;
+  }
+}

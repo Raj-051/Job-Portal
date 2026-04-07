@@ -1,0 +1,102 @@
+/* 🌐 PAGE BACKGROUND */
+.job-details-page {
+  min-height: 100vh;
+  background: #f4f6f9;
+  padding: 40px 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* 🔙 BACK BUTTON */
+.back-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: 0.3s ease;
+}
+
+.back-btn:hover {
+  background: #1e40af;
+}
+
+/* 📦 MAIN CARD */
+.job-details-card {
+  max-width: 900px;
+  margin: auto;
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* 🏷 TITLE */
+.job-details-card h2 {
+  font-size: 28px;
+  color: #111827;
+  margin-bottom: 15px;
+}
+
+/* 📌 BASIC INFO */
+.job-details-card p {
+  font-size: 15px;
+  color: #374151;
+  margin: 6px 0;
+}
+
+.job-details-card strong {
+  color: #111827;
+}
+
+/* 📊 SECTION HEADINGS */
+.job-details-card h3 {
+  font-size: 18px;
+  margin-top: 25px;
+  margin-bottom: 10px;
+  padding-left: 10px;
+  border-left: 4px solid #2563eb;
+  color: #1f2937;
+}
+
+/* 📄 TEXT BLOCK */
+.job-details-card p:last-child,
+.job-details-card .text-block {
+  line-height: 1.6;
+}
+
+/* ➖ DIVIDER */
+hr {
+  border: none;
+  height: 1px;
+  background: #e5e7eb;
+  margin: 20px 0;
+}
+
+/* 🎯 SKILL TAGS (optional upgrade) */
+.skill-tag {
+  display: inline-block;
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  margin: 4px;
+}
+
+/* 📱 RESPONSIVE */
+@media (max-width: 768px) {
+  .job-details-card {
+    padding: 20px;
+  }
+
+  .job-details-card h2 {
+    font-size: 22px;
+  }
+
+  .job-details-card h3 {
+    font-size: 16px;
+  }
+}

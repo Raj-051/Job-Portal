@@ -1,36 +1,101 @@
-
-/* ===============================
-   SCHEDULE INTERVIEW PAGE
-================================ */
-
+/* PAGE */
 .interview-page {
-  padding: 40px;
-  background-color: #f4f6f9;
   min-height: 100vh;
+  background: #f5f7fb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  font-family: "Segoe UI", sans-serif;
 }
 
-/* Reuse form-card, form-grid, form-group from company page */
-
-/* Select Styling */
-.form-group select {
+/* CARD */
+.form-card {
+  background: #ffffff;
+  padding: 30px 35px;
+  border-radius: 12px;
   width: 100%;
-  padding: 10px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
+  max-width: 500px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* TITLE */
+.form-card h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+/* FORM */
+.form-card form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* LABEL */
+.form-card label {
+  margin-top: 12px;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #555;
+}
+
+/* INPUT + SELECT */
+.form-card input,
+.form-card select {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
   outline: none;
   font-size: 14px;
+  transition: 0.3s;
 }
 
-.form-group select:focus {
-  border-color: #0d6efd;
+/* FOCUS EFFECT */
+.form-card input:focus,
+.form-card select:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 4px rgba(74, 144, 226, 0.4);
 }
 
-.form-card .submit-btn {
-  background-color: #28a745;
+/* READONLY INPUT */
+.form-card input[readonly] {
+  background: #f1f1f1;
+  cursor: not-allowed;
+}
+
+/* BUTTON */
+.form-card button {
+  margin-top: 20px;
+  padding: 12px;
+  background: linear-gradient(135deg, #4a90e2, #357abd);
   color: white;
   border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-.form-card .submit-btn:hover {
-  background-color: #218838;
+/* BUTTON HOVER */
+.form-card button:hover {
+  background: linear-gradient(135deg, #357abd, #2a5f94);
+  transform: translateY(-2px);
+}
+
+/* BUTTON CLICK */
+.form-card button:active {
+  transform: scale(0.98);
+}
+
+/* EMPTY MESSAGE OPTION */
+select option {
+  color: #333;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .form-card {
+    padding: 20px;
+  }
 }

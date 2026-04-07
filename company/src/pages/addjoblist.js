@@ -17,14 +17,11 @@ function Addjoblist() {
       return;
     }
 
-    Axios.get(`http://localhost:1337/api/getjobcategory/${company.Company_id}`)
-      .then((response) => {
-        setList(response.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
+    Axios.get("http://localhost:1337/api/getjobcategory")
+  .then((response) => {
+    console.log("CATEGORY:", response.data); // debug
+    setList(response.data);
+  });
   }, []);
 
 

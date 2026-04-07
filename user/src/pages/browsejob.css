@@ -13,6 +13,7 @@
   display:flex;
   flex-direction:column;
   gap:20px;
+  padding-top: 20px;
 }
 
 /* Job card */
@@ -51,6 +52,7 @@
   margin:0;
   font-size:18px;
   color:#0a1f44;
+ 
 }
 
 .job-info p{
@@ -71,4 +73,10 @@
 
 .btn-apply:hover{
   background:#e74c2c;
+}
+.filter-title{
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  
 }

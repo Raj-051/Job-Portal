@@ -1,0 +1,39 @@
+/* ===== ADMIN FOOTER ===== */
+.admin-footer {
+  position: fixed;
+  bottom: 0;
+  left: 260px; /* same as sidebar */
+  width: calc(100% - 260px);
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  padding: 12px 20px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 14px;
+  color: #555;
+  z-index: 100;
+}
+
+/* Left & Right */
+.footer-left {
+  font-weight: 500;
+  margin-left: 50%;
+}
+
+.footer-right strong {
+  color: #007bff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-footer {
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    gap: 5px;
+    text-align: center;
+  }
+}

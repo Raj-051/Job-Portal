@@ -1,128 +1,145 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Axios from "axios";
 import "./scheduleinterview.css";
 
 function ScheduleInterview() {
 
+  const [shortlisted, setShortlisted] = useState([]);
+  const [selected, setSelected] = useState(null);
+  const [interviews, setInterviews] = useState([]);
+
+  const company = JSON.parse(sessionStorage.getItem("mydata"));
+
+  // 🔥 LOAD DATA
+  useEffect(() => {
+
+    if (!company) return;
+
+    Axios.get(`http://localhost:1337/api/getShortlisted/${company.Company_id}`)
+      .then((res) => {
+        const data = Array.isArray(res.data) ? res.data : [];
+        setShortlisted(data);
+      });
+
+    Axios.get(`http://localhost:1337/api/getinterviews/${company.Company_id}`)
+      .then((res) => {
+        setInterviews(Array.isArray(res.data) ? res.data : []);
+      });
+
+  }, [company]);
+
+  // ✅ SCHEDULE INTERVIEW
   const scheduleInterview = (e) => {
     e.preventDefault();
 
-    const name = document.getElementById("name").value;
-    const job = document.getElementById("job").value;
-    const date = document.getElementById("date").value;
-    const time = document.getElementById("time").value;
-    const mode = document.getElementById("mode").value;
-    const location = document.getElementById("location").value;
+    const date = e.target.date.value;
+    const time = e.target.time.value;
+    const mode = e.target.mode.value;
+    const location = e.target.location.value;
 
-    if (!name || !job || !date || !time || !location) {
+    if (!selected || !date || !time || !location) {
       alert("Please fill all fields");
       return;
     }
 
-    const tableBody = document.getElementById("interviewTable");
+    if (interviews.some(i => i.Apply_id === selected.Apply_id)) {
+      alert("Interview already scheduled");
+      return;
+    }
 
-    const newRow = document.createElement("tr");
+    Axios.post("http://localhost:1337/api/scheduleInterview", {
+      Apply_id: selected.Apply_id,
+      Job_id: selected.Job_id,
+      User_id: selected.User_id,
+      Company_id: company.Company_id,
+      interview_date: date,
+      interview_time: time,
+      interview_mode: mode,
+      interview_link: mode === "Online" ? location : null,
+      interview_location: mode === "Offline" ? location : null
+    })
+    .then((res) => {
 
-    newRow.innerHTML = `
-      <td>${tableBody.rows.length + 1}</td>
-      <td>${name}</td>
-      <td>${job}</td>
-      <td>${date}</td>
-      <td>${time}</td>
-      <td>${mode}</td>
-      <td>${location}</td>
-      <td><span class="status-active">Scheduled</span></td>
-      <td>
-        <button onclick="this.parentElement.parentElement.remove()">
-          Delete
-        </button>
-      </td>
-    `;
+      alert("Interview Scheduled");
 
-    tableBody.appendChild(newRow);
+      const newInterview = {
+        Interview_id: res.data.insertId,
+        ...selected,
+        interview_date: date,
+        interview_time: time,
+        interview_mode: mode,
+        interview_link: mode === "Online" ? location : null,
+        interview_location: mode === "Offline" ? location : null,
+        status: "Scheduled"
+      };
+
+      setInterviews(prev => [...prev, newInterview]);
+
+    })
+    .catch(() => alert("Error scheduling"));
 
     e.target.reset();
+    setSelected(null);
   };
 
   return (
     <div className="interview-page">
 
       <div className="form-card">
-        <div className="form-header">Schedule Interview</div>
+        <h2>Schedule Interview</h2>
 
         <form onSubmit={scheduleInterview}>
+          
+          {/* 👤 Candidate Dropdown */}
+          <label>Candidate</label>
+          <select
+            required
+            onChange={(e) => {
+              const item = shortlisted.find(
+                (d) => d.Apply_id == e.target.value
+              );
+              setSelected(item);
+            }}
+          >
+            <option value="">Select Candidate</option>
 
-          <div className="form-grid">
+            {shortlisted.map((item) => (
+              <option key={item.Apply_id} value={item.Apply_id}>
+                {item.Name}
+              </option>
+            ))}
+          </select>
 
-            <div className="form-group">
-              <label>Candidate Name</label>
-              <input type="text" id="name" required />
-            </div>
+          {/* 💼 Job Title Dropdown (FIXED) */}
+          <label>Job Title</label>
+          <select value={selected?.job_title || ""} disabled>
+            <option value="">
+              {selected ? selected.job_title : "Select Candidate First"}
+            </option>
+          </select>
 
-            <div className="form-group">
-              <label>Job Title</label>
-              <input type="text" id="job" required />
-            </div>
+          {/* 📅 Date */}
+          <label>Date</label>
+          <input type="date" name="date" required />
 
-            <div className="form-group">
-              <label>Date</label>
-              <input type="date" id="date" required />
-            </div>
+          {/* ⏰ Time */}
+          <label>Time</label>
+          <input type="time" name="time" required />
 
-            <div className="form-group">
-              <label>Time</label>
-              <input type="time" id="time" required />
-            </div>
+          {/* 📍 Mode */}
+          <label>Mode</label>
+          <select name="mode">
+            <option>Online</option>
+            <option>Offline</option>
+          </select>
 
-            <div className="form-group">
-              <label>Mode</label>
-              <select id="mode">
-                <option>Online</option>
-                <option>Offline</option>
-              </select>
-            </div>
+          {/* 📌 Location */}
+          <label>Meeting Link / Address</label>
+          <input type="text" name="location" required />
 
-            <div className="form-group full-width">
-              <label>Meeting Link / Office Address</label>
-              <input type="text" id="location" required />
-            </div>
-
-          </div>
-
-          <button type="submit" className="submit-btn">
-            Schedule Interview
-          </button>
+          <button type="submit">Schedule</button>
 
         </form>
-      </div>
-
-      {/* Interview Table */}
-      <div className="job-card">
-        <div className="job-header">Scheduled Interviews</div>
-
-        <table className="job-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Candidate</th>
-              <th>Job</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Mode</th>
-              <th>Location</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-
-          <tbody id="interviewTable">
-            <tr>
-              <td colSpan="9" className="no-data">
-                No interviews scheduled
-              </td>
-            </tr>
-          </tbody>
-
-        </table>
       </div>
 
     </div>

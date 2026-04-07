@@ -1,134 +1,169 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Axios from "axios";
 import "./dashboard.css";
 import Header from "../components/header";
 import Sidebar from "../components/sidebar";
 import Footer from "../components/footer";
+
+// 🔥 CHART IMPORT
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend
+} from "chart.js";
+
+ChartJS.register(
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend
+);
+
 function Dashboard() {
+
+  const [data, setData] = useState({});
+
+  // 🔥 API CALL
+  useEffect(() => {
+
+    Axios.get("http://localhost:1337/api/adminDashboard")
+      .then((res) => {
+        console.log("Dashboard Data:", res.data);
+        setData(res.data);
+      })
+      .catch(() => alert("Error loading dashboard"));
+
+  }, []);
+
+  // 🔥 CHART DATA
+ const chartData = {
+  labels: ["Companies", "Jobs", "Applications", "Interviews"],
+  datasets: [
+    {
+      label: "System Data",
+      data: [
+        data.totalCompanies || 0,
+        data.totalJobs || 0,
+        data.totalApplications || 0,
+        data.totalInterviews || 0
+      ],
+
+      // 🔥 Soft professional colors
+      backgroundColor: [
+        "#4e73df", // blue
+        "#1cc88a", // green
+        "#f6c23e", // yellow
+        "#e74a3b"  // red
+      ],
+
+      borderRadius: 8,   // rounded bars
+      barThickness: 40   // width of bars
+    }
+  ]
+};
+  const chartOptions = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: false
+    },
+    tooltip: {
+      backgroundColor: "#333",
+      titleColor: "#fff",
+      bodyColor: "#fff"
+    }
+  },
+  scales: {
+    x: {
+      grid: {
+        display: false
+      }
+    },
+    y: {
+      beginAtZero: true,
+      grid: {
+        color: "#eee"
+      }
+    }
+  }
+};
+
   return (
     <>
+      <Header />
+      <Sidebar />
+
       <div className="page-content">
+
         <div className="page-header">
           <div className="container-fluid">
-            <h2 className="h5 no-margin-bottom">Dashboard</h2>
+            <h2 className="h5 no-margin-bottom">Admin Dashboard</h2>
           </div>
         </div>
 
+        {/* 🔥 STAT CARDS */}
         <section className="no-padding-top no-padding-bottom">
           <div className="container-fluid">
-            <div className="row">
-              <div className="col-md-3 col-sm-6">
-                <div className="statistic-block block">
-                  <div className="progress-details d-flex align-items-end justify-content-between">
-                    <div className="title">
-                      <div className="icon">
-                        <i className="icon-user-1"></i>
-                      </div>
-                      <strong>New Clients</strong>
-                    </div>
-                    <div className="number dashtext-1">27</div>
-                  </div>
-                  <div className="progress progress-template">
-                    <div
-                      className="progress-bar progress-bar-template dashbg-1"
-                      role="progressbar"
-                      style={{ width: "30%" }}
-                      aria-valuenow="30"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </div>
-              </div>
+            <div className="dashboard-cards">
 
-              <div className="col-md-3 col-sm-6">
-                <div className="statistic-block block">
-                  <div className="progress-details d-flex align-items-end justify-content-between">
-                    <div className="title">
-                      <div className="icon">
-                        <i className="icon-contract"></i>
-                      </div>
-                      <strong>New Projects</strong>
-                    </div>
-                    <div className="number dashtext-2">375</div>
-                  </div>
-                  <div className="progress progress-template">
-                    <div
-                      className="progress-bar progress-bar-template dashbg-2"
-                      role="progressbar"
-                      style={{ width: "70%" }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
+  <div className="statistic-block block">
+    <div className="title"><strong>Total Companies</strong></div>
+    <div className="number dashtext-1">
+      {data.totalCompanies || 0}
+    </div>
+  </div>
 
-              <div className="col-md-3 col-sm-6">
-                <div className="statistic-block block">
-                  <div className="progress-details d-flex align-items-end justify-content-between">
-                    <div className="title">
-                      <div className="icon">
-                        <i className="icon-paper-and-pencil"></i>
-                      </div>
-                      <strong>New Invoices</strong>
-                    </div>
-                    <div className="number dashtext-3">140</div>
-                  </div>
-                  <div className="progress progress-template">
-                    <div
-                      className="progress-bar progress-bar-template dashbg-3"
-                      role="progressbar"
-                      style={{ width: "55%" }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
+  <div className="statistic-block block">
+    <div className="title"><strong>Total Jobs</strong></div>
+    <div className="number dashtext-2">
+      {data.totalJobs || 0}
+    </div>
+  </div>
 
-              <div className="col-md-3 col-sm-6">
-                <div className="statistic-block block">
-                  <div className="progress-details d-flex align-items-end justify-content-between">
-                    <div className="title">
-                      <div className="icon">
-                        <i className="icon-writing-whiteboard"></i>
-                      </div>
-                      <strong>All Projects</strong>
-                    </div>
-                    <div className="number dashtext-4">41</div>
-                  </div>
-                  <div className="progress progress-template">
-                    <div
-                      className="progress-bar progress-bar-template dashbg-4"
-                      role="progressbar"
-                      style={{ width: "35%" }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+  <div className="statistic-block block">
+    <div className="title"><strong>Total Applications</strong></div>
+    <div className="number dashtext-3">
+      {data.totalApplications || 0}
+    </div>
+  </div>
+
+  <div className="statistic-block block">
+    <div className="title"><strong>Total Interviews</strong></div>
+    <div className="number dashtext-4">
+      {data.totalInterviews || 0}
+    </div>
+  </div>
+
+</div>
           </div>
         </section>
 
-        <section className="no-padding-bottom">
+        {/* 🔥 CHART SECTION */}
+        <section style={{ marginTop: "20px" }}>
           <div className="container-fluid">
             <div className="row">
-              <div className="col-lg-4">
-                <div className="bar-chart block no-margin-bottom">
-                  <canvas id="barChartExample1"></canvas>
-                </div>
-                <div className="bar-chart block">
-                  <canvas id="barChartExample2"></canvas>
-                </div>
+
+              <div className="col-lg-12">
+                <div className="block chart-container">
+  <h3>System Overview</h3>
+  <div className="chart-box">
+    <Bar data={chartData} options={chartOptions} />
+  </div>
+</div>
               </div>
 
-              <div className="col-lg-8">
-                <div className="line-cahrt block">
-                  <canvas id="lineCahrt"></canvas>
-                </div>
-              </div>
             </div>
           </div>
         </section>
 
-        {/* --- MORE SECTIONS CONTINUE EXACTLY SAME --- */}
       </div>
+
+      <Footer />
     </>
   );
 }

@@ -1,35 +1,62 @@
-
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import "./viewjoblist.css";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Viewjoblist() {
+
+  const [jobs, setJobs] = useState([]);
+  const [expanded, setExpanded] = useState({});
+
+  const company = JSON.parse(sessionStorage.getItem("mydata"));
+
+  // ✅ FETCH ONLY COMPANY JOBS
+  useEffect(() => {
+    if (!company) return;
+
+    Axios.post("http://localhost:1337/api/getjoblist", {
+      Company_id: company.Company_id,
+    })
+      .then((response) => {
+        setJobs(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  // ✅ DELETE WITHOUT RELOAD
   const deleteJob = (id) => {
     Axios.delete(`http://localhost:1337/api/deletejob/${id}`)
-        .then((res) => {
-            alert("Job deleted successfully");
-            window.location.reload(); // refresh page
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-};
-const [jobs, setJobs] = useState([]);
+      .then(() => {
+        alert("Job deleted successfully");
+        setJobs(jobs.filter((job) => job.Job_id !== id));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-useEffect(() => {
-  Axios.get("http://localhost:1337/api/getjoblist")
-    .then((response) => {
-      setJobs(response.data);
-    });
-  });
+  // ✅ TOGGLE DESCRIPTION
+  const toggleDescription = (id) => {
+    setExpanded((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
   return (
     <div className="job-container">
+
+      {/* ✅ TOP TITLE */}
+      <h2 className="page-title">Job List</h2>
+
       <div className="job-card">
-        <div className="job-header">Job List</div>
 
         <div className="job-table-wrapper">
+
           <table className="job-table">
+
             <thead>
               <tr>
                 <th>#</th>
@@ -41,78 +68,90 @@ useEffect(() => {
                 <th>End Date</th>
                 <th>Type</th>
                 <th>Description</th>
-              
+                <th>Action</th>
               </tr>
             </thead>
+
             <tbody>
-              {jobs.map((job,index) => (
 
-                <tr key={job.id}>
-                  <td>{index + 1}</td>
-                  <td>{job.job_title}</td>
-                  <td>{job.Jobcat_name}</td>
-                  <td>{job.location}</td>
-                  <td>{job.salary}</td>
-                  <td>{job.skill}</td> 
-                  <td>{job.end_date}</td>
-                  
-                  <td>{job.jobtype}</td>
-                  <td>{job.description}</td>
+              {jobs.length > 0 ? (
+                jobs.map((job, index) => {
 
-                  <td>
-                    <Link
-to="/editjoblist"
-state={{Job_id:job.Job_id}}
-className="edit-btn"
->
-Edit
-</Link>
+                  const isOpen = expanded[job.Job_id];
 
-                    <button className="delete-btn" onClick={() => deleteJob(job.Job_id)}>Delete</button>
-                  </td>
-                  {/* <td>
-                    <span
-                      className={
-                        job.status === "Active"
-                          ? "status-active"
-                          : "status-inactive"
-                      }
-                      onClick={() => toggleStatus(job.id)}
-                    >
-                      {job.status}
-                    </span>
-                  </td> */}
+                  return (
+                    <tr key={job.Job_id}>
 
-                  {/* <td>
-                    <button
-                      className="btn-edit"
-                      onClick={() => alert("Edit functionality here")}
-                    >
-                      Edit
-                    </button>
+                      <td>{index + 1}</td>
+                      <td>{job.job_title}</td>
+                      <td>{job.Jobcat_name}</td>
+                      <td>{job.location}</td>
+                      <td>{job.salary}</td>
+                      <td>{job.skill}</td>
+                      <td>{job.end_date}</td>
+                      <td>{job.jobtype}</td>
 
-                    <button
-                      className="btn-delete"
-                      onClick={() => deleteJob(job.id)}
-                    >
-                      Delete
-                    </button>
-                  </td> */}
-                </tr>
-                
-              ))}
+                      {/* ✅ DESCRIPTION */}
+                      <td>
+                        <div className="desc-box">
 
-              {jobs.length === 0 && (
+                          <p className={isOpen ? "full" : "short"}>
+                            {job.description}
+                          </p>
+
+                          {job.description && job.description.length > 80 && (
+                            <span
+                              className="view-btn"
+                              onClick={() => toggleDescription(job.Job_id)}
+                            >
+                              {isOpen ? "▲" : " ▼"}
+                            </span>
+                          )}
+
+                        </div>
+                      </td>
+
+                      {/* ✅ ACTION */}
+                      <td>
+                        <div className="action-box">
+
+                          <Link
+                            to="/editjoblist"
+                            state={{ Job_id: job.Job_id }}
+                            className="edit-btn"
+                          >
+                            Edit
+                          </Link>
+
+                          <button
+                            className="delete-btn"
+                            onClick={() => deleteJob(job.Job_id)}
+                          >
+                            Delete
+                          </button>
+
+                        </div>
+                      </td>
+
+                    </tr>
+                  );
+                })
+              ) : (
                 <tr>
-                  <td colSpan="9" className="no-data">
+                  <td colSpan="10" className="no-data">
                     No Jobs Found
                   </td>
                 </tr>
               )}
+
             </tbody>
+
           </table>
+
         </div>
+
       </div>
+
     </div>
   );
 }

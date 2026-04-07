@@ -135,7 +135,41 @@ box-shadow:0 5px 15px rgba(0,0,0,0.05);
 .job-left{
 display:flex;
 gap:15px;
-align-items:center;
+align-items:start;
+justify-content: start;
+}
+
+.job-top {
+  display: block;   /* 🔥 remove flex */
+}
+
+/* 🔥 DATE STYLE */
+.job-info small {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #ff4d4f;
+  font-weight: 500;
+  background: #fff1f0;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.job-line {
+  font-size: 16px;
+  font-weight: 600;
+  color:#888 ;
+  margin: 0;
+  white-space: nowrap;   /* 🔥 force single line */
+  overflow: hidden;
+  text-overflow: ellipsis; /* optional (for long text) */
+}
+
+.job-date {
+  font-size: 14px;
+  color: #888;
+  font-weight: normal;
+  margin-left: 8px;
 }
 
 .btn-apply{
@@ -409,6 +443,28 @@ flex-direction:column;
   min-width: 180px;
 }
 
+/* 🔥 ALIGN RIGHT */
+.view-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+/* 🔥 TEXT STYLE BUTTON */
+.view-btn {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #007BFF;
+  transition: 0.3s;
+}
+
+/* HOVER EFFECT */
+.view-btn:hover {
+  color: #007BFF;
+  text-decoration: underline;
+}
+
 /* Button styling */
 .btn-search {
   padding: 10px 20px;
@@ -421,10 +477,14 @@ flex-direction:column;
   transition: 0.3s;
 }
 
+.btn-primary{
+  width: 35%;
+}
 .btn-search:hover {
   background-color: #0056b3;
 }
 /* ================= RESPONSIVE ================= */
+
 
 @media(max-width:768px){
 

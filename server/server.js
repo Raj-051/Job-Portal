@@ -155,6 +155,24 @@ app.post("/api/updatejobcategory", (req, res) => {
 });
 
 //view job list
+app.post("/api/getjoblist", (req, res) => {
+  const { Company_id } = req.body;
+
+  const query = `
+    SELECT a.Jobcat_name, b.*
+    FROM job_category as a
+    INNER JOIN job as b ON a.Jobcat_id = b.Jobcat_id
+    WHERE b.Company_id = ?
+  `;
+
+  con.query(query, [Company_id], (err, results) => {
+    if (err) {
+      return res.status(500).send({ error: "Database error" });
+    }
+    res.send(results);
+  });
+});
+
 app.get("/api/getjoblist", (req, res) => {
     const query = "SELECT a.Jobcat_name,b.* FROM job_category as a,Job as b where a.Jobcat_id =b.Jobcat_id";
     con.query(query, (err, results) => {
@@ -452,19 +470,20 @@ app.post("/api/userlogin", (req, res) => {
 app.post("/api/usersignup", upload.single("Upload_photo"), (req, res) => {
 
   const {
-    Name,
-    Contact_no,
-    email,
-    password,
-    Address,
-    Education,
-    Experience,
-    Skills,
-    Company_name,
-    Post,
-    Duration,
-    Work_description
-  } = req.body;
+  Name,
+  Contact_no,
+  email,
+  password,
+  Address,
+  Education,
+  Experience,
+  skills,          // ✅ FIX
+  company_name,    // ✅ FIX
+  post,            // ✅ FIX
+  Duration,
+  Work_description
+} = req.body;
+  
 
   const Upload_photo = req.file ? req.file.filename : "";
 
@@ -485,11 +504,12 @@ app.post("/api/usersignup", upload.single("Upload_photo"), (req, res) => {
       Education,
       Experience,
       Upload_photo,
-      Company_name || "",
-      Post || "",
+      company_name || "",
+      post || "",
       Duration || "",
-      Work_description || "",
-      Skills
+      skills || "",
+      Work_description 
+      
 
     
     ],
@@ -512,6 +532,7 @@ app.post("/api/usersignup", upload.single("Upload_photo"), (req, res) => {
 
 const PDFDocument = require("pdfkit");
 
+// 🔥 GENERATE RESUME
 app.get("/api/generate-resume/:id", (req, res) => {
 
   const id = req.params.id;
@@ -520,122 +541,198 @@ app.get("/api/generate-resume/:id", (req, res) => {
 
   con.query(sql, [id], (err, result) => {
 
-    if (err) return res.send("Database Error");
-    if (result.length === 0) return res.send("User not found");
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Database error");
+    }
+
+    if (result.length === 0) {
+      return res.status(404).send("User not found");
+    }
 
     const user = result[0];
 
-    const doc = new PDFDocument({ margin: 30 });
+    // 🔥 CREATE PDF
+    const doc = new PDFDocument({ margin: 40 });
 
     res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", `inline; filename=resume_${id}.pdf`);
+    res.setHeader(
+      "Content-Disposition",
+      `inline; filename=resume_${id}.pdf`
+    );
 
     doc.pipe(res);
 
-    // ===== LEFT SIDEBAR =====
-    doc.rect(0, 0, 180, 800).fill("#f0f0f0");
+    // =========================
+    // 🔥 HEADER
+    // =========================
 
-    // PHOTO
+    // IMAGE
     if (user.Upload_photo) {
       try {
         const imgPath = path.join(__dirname, "public", user.Upload_photo);
-        doc.image(imgPath, 40, 40, { width: 100, height: 100 });
-      } catch (e) {}
+        doc.image(imgPath, 40, 40, { width: 80, height: 80 });
+      } catch (e) {
+        console.log("Image error:", e);
+      }
     }
 
     // NAME
     doc
-      .fillColor("#000")
-      .fontSize(16)
-      .text(user.Name, 20, 160, { width: 140, align: "center" });
+      .fontSize(18)
+      .text(user.Name || "Your Name", 140, 40);
 
     // CONTACT
-    let yPosition = 225;
-
-doc
-  .fontSize(10)
-  .fillColor("#000")
-  .text(`Address: ${user.Address}`, 20, yPosition, {
-    width: 140,
-    lineGap: 4
-  });
-
-yPosition += 35;
-
-doc.text(`Phone: ${user.Contact_no}`, 20, yPosition, {
-  width: 140
-});
-
-yPosition += 20;
-
-doc.text(`Email: ${user.email}`, 20, yPosition, {
-  width: 140
-});
-
-    // SKILLS
-    doc.text("Skills", 20, 320);
-    doc.moveTo(20, 335).lineTo(160, 335).stroke();
-
-    doc.text(user.skills || "N/A", 20, 345, {
-      width: 140,
-      lineGap: 4
-    });
-
-    // ===== RIGHT SIDE =====
-    let startX = 200;
-
-    // SUMMARY
     doc
-      .fontSize(14)
-      .fillColor("#333")
-      .text("Professional Summary", startX, 40);
+      .fontSize(11)
+      .text(`Email: ${user.email || "-"}`, 140, 65)
+      .text(`Phone: ${user.Contact_no || "-"}`, 140, 80)
+      .text(`Address: ${user.Address || "-"}`, 140, 95);
 
-    doc.moveTo(startX, 60).lineTo(550, 60).stroke();
+    // LINE
+    doc.moveTo(40, 130).lineTo(550, 130).stroke();
+
+    let y = 150;
+
+    // =========================
+    // 🔥 PROFILE
+    // =========================
+    doc.fontSize(14).text("PROFILE", 40, y);
+    doc.moveTo(40, y + 15).lineTo(550, y + 15).stroke();
+
+    y += 25;
 
     doc
       .fontSize(11)
-      .text(
-        "Motivated MERN Stack Developer with experience in building full-stack web applications including job portals. Skilled in React, Node.js, Express, and MySQL. Passionate about developing scalable and user-friendly applications.",
-        startX,
-        70,
-        { width: 350 }
-      );
+      .text(user.Address || "-", 40, y, { width: 500 });
 
-    // EXPERIENCE
-    doc
-      .fontSize(14)
-      .text("Work Experience", startX, 140);
+    y += 40;
 
-    doc.moveTo(startX, 160).lineTo(550, 160).stroke();
+    // =========================
+    // 🔥 EDUCATION
+    // =========================
+    doc.fontSize(14).text("EDUCATION", 40, y);
+    doc.moveTo(40, y + 15).lineTo(550, y + 15).stroke();
+
+    y += 25;
 
     doc
       .fontSize(11)
-      .text(`Company: ${user.company_name || "-"}`, startX, 170);
+      .text(user.Education || "-", 40, y, { width: 500 });
 
-    doc.text(`Role: ${user.post || "-"}`, startX, 190);
-    doc.text(`Duration: ${user.Duration || "-"}`, startX, 210);
+    y += 40;
 
-    doc.text(
-      "Developed a Job Portal using MERN stack with features like authentication, job posting, job application, and resume generation.",
-      startX,
-      230,
-      { width: 350 }
-    );
+    // =========================
+    // 🔥 SKILLS
+    // =========================
+    doc.fontSize(14).text("SKILLS", 40, y);
+    doc.moveTo(40, y + 15).lineTo(550, y + 15).stroke();
 
-    // EDUCATION
-    doc
-      .fontSize(14)
-      .text("Education", startX, 300);
-
-    doc.moveTo(startX, 320).lineTo(550, 320).stroke();
+    y += 25;
 
     doc
       .fontSize(11)
-      .text(user.Education, startX, 330, { width: 350 });
+      .text(user.skills || "-", 40, y, { width: 500 });
+
+    y += 40;
+
+    // =========================
+    // 🔥 EXPERIENCE
+    // =========================
+    if (user.Experience > 0) {
+
+      doc.fontSize(14).text("EXPERIENCE", 40, y);
+      doc.moveTo(40, y + 15).lineTo(550, y + 15).stroke();
+
+      y += 25;
+
+      doc.fontSize(11)
+        .text(`Company: ${user.company_name || "-"}`, 40, y)
+        .text(`Role: ${user.post || "-"}`, 40, y + 15)
+        .text(`Duration: ${user.Duration || "-"}`, 40, y + 30);
+
+      y += 55;
+
+      doc.text(user.Work_description || "-", 40, y, {
+        width: 500
+      });
+    }
 
     doc.end();
   });
 });
+
+//update resume 
+app.put("/api/updateProfile/:id", upload.single("Upload_photo"), (req, res) => {
+
+  console.log("BODY:", req.body); // 🔥 debug
+  console.log("FILE:", req.file);
+
+  const id = req.params.id;
+
+  // ✅ SAFE destructuring
+  const {
+    Name,
+    Contact_no,
+    email,
+    Address,
+    Education,
+    Experience,
+    skills,
+    company_name,
+    post,
+    Duration,
+    Work_description
+  } = req.body || {};  // 🔥 FIX
+
+  const Upload_photo = req.file ? req.file.filename : null;
+
+  if (!Name || !Contact_no || !email) {
+    return res.status(400).json({
+      status: "error",
+      message: "Required fields missing"
+    });
+  }
+
+  let sql = `
+    UPDATE job_seeker SET
+    Name=?, Contact_no=?, email=?, Address=?, Education=?,
+    Experience=?, skills=?, company_name=?, post=?, Duration=?, Work_description=?
+  `;
+
+  let values = [
+    Name,
+    Contact_no,
+    email,
+    Address || "",
+    Education || "",
+    Experience || "0",
+    skills || "",
+    company_name || "",
+    post || "",
+    Duration || "",
+    Work_description || ""
+  ];
+
+  if (Upload_photo) {
+    sql += ", Upload_photo=?";
+    values.push(Upload_photo);
+  }
+
+  sql += " WHERE User_id=?";
+  values.push(id);
+
+  con.query(sql, values, (err, result) => {
+
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Update error");
+    }
+
+    res.send({ message: "Updated successfully" });
+  });
+});
+
 //apply joblist
 app.post("/api/applyjob", (req, res) => {
   const { Job_id, User_id } = req.body;
@@ -692,7 +789,24 @@ app.post("/api/applyjob", (req, res) => {
   });
 });
 
+app.get("/api/getuser/:id", (req, res) => {
+  const id = req.params.id;
 
+  const sql = "SELECT * FROM job_seeker WHERE User_id=?";
+
+  con.query(sql, [id], (err, result) => {
+    if (err) return res.status(500).send(err);
+
+    if (result.length === 0) {
+      return res.send({});
+    }
+
+    res.send(result[0]);
+  });
+});
+
+
+//get job applied by user
 app.get("/api/getappliedjobs/:userId", (req, res) => {
 
   const userId = req.params.userId;
@@ -710,6 +824,608 @@ app.get("/api/getappliedjobs/:userId", (req, res) => {
 
 });
 
+//manage candidates
+
+// GET APPLIED CANDIDATES FOR COMPANY
+// ✅ GET CANDIDATES (FOR COMPANY)
+app.get("/api/getcandidates/:companyId", (req, res) => {
+
+  const companyId = req.params.companyId;
+
+  const query = `
+  SELECT 
+    a.Apply_id,
+    CASE 
+      WHEN a.Status = 0 THEN 'Pending'
+      WHEN a.Status = 1 THEN 'Shortlisted'
+      WHEN a.Status = 2 THEN 'Rejected'
+    END AS Status,
+    j.job_title,
+    j.location,
+    u.Name,
+    u.email,
+    u.Contact_no
+  FROM apply_job a
+  JOIN job j ON a.Job_id = j.Job_id
+  JOIN job_seeker u ON a.User_id = u.User_id
+  WHERE a.Company_id = ?
+  ORDER BY a.Apply_id DESC
+`;
+
+  con.query(query, [companyId], (err, results) => {
+
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Database error");
+    }
+
+    res.send(results);
+
+  });
+
+});
+
+// ✅ UPDATE STATUS (Shortlist / Reject)
+app.post("/api/updateStatus", (req, res) => {
+
+  const { Apply_id, status } = req.body;
+
+  const query = "UPDATE apply_job SET Status=? WHERE Apply_id=?";
+
+  con.query(query, [status, Apply_id], (err, result) => {
+
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Update error");
+    }
+
+    res.send({ message: "Status updated successfully" });
+
+  });
+
+});
+
+//schedule interview
+// ✅ SCHEDULE INTERVIEW
+app.post("/api/updateStatus", (req, res) => {
+
+  const { Apply_id, status } = req.body;
+
+  const sql = "UPDATE apply_job SET Status = ? WHERE Apply_id = ?";
+
+  con.query(sql, [status, Apply_id], (err) => {
+    if (err) return res.send(err);
+
+    res.send("Status Updated");
+  });
+
+});
+
+app.post("/api/scheduleInterview", (req, res) => {
+
+  const {
+    Apply_id, Job_id, User_id, Company_id,
+    interview_date, interview_time,
+    interview_mode, interview_link, interview_location
+  } = req.body;
+
+  const sql = `
+    INSERT INTO interview_schedule
+    (Apply_id, Job_id, User_id, Company_id,
+     interview_date, interview_time,
+     interview_mode, interview_link, interview_location, status)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'Scheduled')
+  `;
+
+  con.query(sql, [
+    Apply_id, Job_id, User_id, Company_id,
+    interview_date, interview_time,
+    interview_mode, interview_link, interview_location
+  ], (err, result) => {
+
+    if (err) {
+      console.log(err);
+      return res.status(500).send(err);
+    }
+
+    res.send({ insertId: result.insertId });
+
+  });
+
+});
+
+app.get("/api/getinterviews/:companyId", (req, res) => {
+
+  const sql = `
+    SELECT i.*, u.Name, j.job_title
+    FROM interview_schedule i
+    JOIN job_seeker u ON i.User_id = u.User_id
+    JOIN job j ON i.Job_id = j.Job_id
+    WHERE i.Company_id = ?
+  `;
+
+  con.query(sql, [req.params.companyId], (err, result) => {
+
+    if (err) {
+      console.log(err);
+      return res.status(500).send(err);
+    }
+
+    res.send(result);
+
+  });
+
+});
+
+// ✅ GET INTERVIEWS FOR COMPANY
+app.get("/api/getShortlisted/:companyId", (req, res) => {
+
+  const sql = `
+    SELECT 
+      aj.Apply_id,
+      aj.Job_id,
+      aj.User_id,
+      u.Name,
+      u.email,
+      u.Contact_no,
+      j.job_title
+    FROM apply_job aj
+    JOIN job_seeker u ON aj.User_id = u.User_id
+    JOIN job j ON aj.Job_id = j.Job_id
+    WHERE aj.Company_id = ? AND aj.Status = 1
+  `;
+
+  con.query(sql, [req.params.companyId], (err, result) => {
+    if (err) return res.send(err);
+    res.send(result); // MUST BE ARRAY
+  });
+
+});
+
+// ✅ DELETE INTERVIEW
+app.delete("/api/deleteInterview/:id", (req, res) => {
+
+  const id = req.params.id;
+
+  const query = "DELETE FROM interview_schedule WHERE Interview_id=?";
+
+  con.query(query, [id], (err, result) => {
+
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Delete error");
+    }
+
+    res.send({ message: "Interview deleted successfully" });
+
+  });
+
+});
+
+// ✅ UPDATE STATUS (Completed / Cancelled)
+app.post("/api/updateInterviewStatus", (req, res) => {
+
+  const { Interview_id, status } = req.body;
+
+  const query = "UPDATE interview_schedule SET status=? WHERE Interview_id=?";
+
+  con.query(query, [status, Interview_id], (err, result) => {
+
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Update error");
+    }
+
+    res.send({ message: "Status updated successfully" });
+
+  });
+
+});
+
+app.get("/api/getShortlisted/:companyId", (req, res) => {
+
+  const sql = `
+    SELECT aj.Apply_id, u.User_id, u.Name, u.email, u.Contact_no,
+           j.Job_id, j.job_title
+    FROM apply_job aj
+    JOIN users u ON aj.User_id = u.User_id
+    JOIN jobs j ON aj.Job_id = j.Job_id
+    WHERE aj.Company_id = ? AND aj.Status = 1
+  `;
+
+  con.query(sql, [req.params.companyId], (err, result) => {
+    if (err) return res.send(err);
+    res.send(result);
+  });
+
+});
+
+app.post("/api/sendMessage", (req, res) => {
+
+  const { sender_id, receiver_id, message, sender_type } = req.body;
+
+  const sql = `
+    INSERT INTO chat (sender_id, receiver_id, message, sender_type)
+    VALUES (?, ?, ?, ?)
+  `;
+
+  con.query(sql, [sender_id, receiver_id, message, sender_type], (err) => {
+    if (err) return res.send(err);
+    res.send("Message Sent");
+  });
+
+});
+
+app.get("/api/getMessages/:userId/:companyId", (req, res) => {
+
+  const { userId, companyId } = req.params;
+
+  const sql = `
+    SELECT * FROM chat
+    WHERE 
+      (sender_id = ? AND receiver_id = ?)
+      OR
+      (sender_id = ? AND receiver_id = ?)
+    ORDER BY created_at ASC
+  `;
+
+  con.query(sql, [userId, companyId, companyId, userId], (err, result) => {
+    if (err) return res.send(err);
+    res.send(result);
+  });
+
+});
+
+//admin manage job 
+app.get("/api/getAllJobs", (req, res) => {
+
+  const sql = `
+    SELECT 
+      j.Job_id,
+      j.job_title,
+      j.location,
+      j.jobtype,
+      j.end_date,
+      c.Company_name
+    FROM job j
+    LEFT JOIN company c ON j.Company_id = c.Company_id
+    ORDER BY j.Job_id DESC
+  `;
+
+  con.query(sql, (err, result) => {
+    if (err) {
+      console.log("ERROR:", err);
+      return res.status(500).send(err);
+    }
+
+    console.log("FINAL JOB DATA:", result); // 🔥 IMPORTANT
+    res.send(result);
+  });
+
+});
+
+//user interview history
+// ✅ GET USER APPLICATIONS + INTERVIEWS
+app.get("/api/getUserApplications/:userId", (req, res) => {
+
+  const userId = req.params.userId;
+
+  const sql = `
+    SELECT 
+      a.Apply_id,
+      a.Status AS application_status,
+      j.job_title,
+      j.location,
+      c.Company_name,
+
+      i.Interview_id,
+      i.interview_date,
+      i.interview_time,
+      i.interview_mode,
+      i.interview_link,
+      i.interview_location,
+      i.status AS interview_status
+
+    FROM apply_job a
+    JOIN job j ON a.Job_id = j.Job_id
+    JOIN company c ON a.Company_id = c.Company_id
+    LEFT JOIN interview_schedule i ON a.Apply_id = i.Apply_id
+
+    WHERE a.User_id = ?
+    ORDER BY a.Apply_id DESC
+  `;
+
+  con.query(sql, [userId], (err, result) => {
+
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Database error");
+    }
+
+    res.send(result);
+
+  });
+
+});
+
+
+
+//company dashboard stats
+// DASHBOARD DATA
+app.get("/api/companyDashboard/:companyId", (req, res) => {
+
+  const companyId = req.params.companyId;
+
+  const sql = `
+    SELECT 
+      (SELECT COUNT(*) FROM job WHERE Company_id = ?) AS totalJobs,
+      (SELECT COUNT(*) FROM apply_job WHERE Company_id = ?) AS totalApplications,
+      (SELECT COUNT(*) FROM apply_job WHERE Company_id = ? AND Status = 1) AS approved,
+      (SELECT COUNT(*) FROM apply_job WHERE Company_id = ? AND Status = 2) AS rejected
+  `;
+
+  con.query(sql, [companyId, companyId, companyId, companyId], (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.send(result[0]);
+  });
+
+});
+
+//Application dashboard stats
+// RECENT APPLICATIONS
+app.get("/api/recentApplications/:companyId", (req, res) => {
+
+  const companyId = req.params.companyId;
+
+  const sql = `
+    SELECT 
+      u.Name,
+      j.job_title,
+      CASE 
+        WHEN a.Status = 0 THEN 'Pending'
+        WHEN a.Status = 1 THEN 'Approved'
+        WHEN a.Status = 2 THEN 'Rejected'
+      END AS Status
+    FROM apply_job a
+    JOIN job j ON a.Job_id = j.Job_id
+    JOIN job_seeker u ON a.User_id = u.User_id
+    WHERE a.Company_id = ?
+    ORDER BY a.Apply_id DESC
+    LIMIT 5
+  `;
+
+  con.query(sql, [companyId], (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.send(result);
+  });
+
+});
+
+
+//Admin Dashboard stats
+// ✅ ADMIN DASHBOARD STATS
+app.get("/api/adminDashboard", (req, res) => {
+  const sql = `
+    SELECT 
+      (SELECT COUNT(*) FROM company) AS totalCompanies,
+      (SELECT COUNT(*) FROM job) AS totalJobs,
+      (SELECT COUNT(*) FROM apply_job) AS totalApplications,
+      (SELECT COUNT(*) FROM interview_schedule) AS totalInterviews
+  `;
+
+  con.query(sql, (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.send(result[0]);
+  });
+});
+
+//admin monitoring job_seeker
+// ✅ GET JOB SEEKERS
+app.get("/api/jobseekers", (req, res) => {
+
+  const sql = "SELECT * FROM job_seeker"; // ✅ correct table name
+
+  con.query(sql, (err, result) => {
+
+    if (err) {
+      console.log(err); // 👈 add this for debug
+      return res.json({ status: "error", message: err });
+    }
+
+    res.json({
+      status: "success",
+      data: result
+    });
+
+  });
+
+});
+
+//admin dynamic login
+app.post("/api/adminlogin", (req, res) => {
+
+  const { email, password } = req.body;
+
+  const sql = "SELECT * FROM admin_login WHERE admin_email = ? AND admin_password = ?";
+
+  con.query(sql, [email, password], (err, result) => {
+
+    if (err) {
+      return res.json({ status: "error", message: err });
+    }
+
+    if (result.length > 0) {
+      res.json({
+        status: "success",
+        admin: result[0]
+      });
+    } else {
+      res.json({
+        status: "error",
+        message: "Invalid Email or Password"
+      });
+    }
+
+  });
+
+});
+
+//admin jobseeker status code
+// 🔥 TOGGLE USER STATUS (BLOCK / UNBLOCK)
+app.post("/api/toggleUserStatus", (req, res) => {
+
+  const { id } = req.body;
+
+  console.log("User ID:", id); // ✅ debug
+
+  const sql = `
+    UPDATE job_seeker 
+    SET status = IF(status = 1, 0, 1) 
+    WHERE User_id = ?
+  `;
+
+  con.query(sql, [id], (err, result) => {
+
+    if (err) {
+      console.log(err);
+      return res.json({ status: "error", message: err });
+    }
+
+    res.json({
+      status: "success",
+      message: "Status updated"
+    });
+
+  });
+
+});
+
+//user recommended jobs
+app.get("/api/recommendedJobs/:userId", (req, res) => {
+  const userId = req.params.userId;
+
+  const sql1 = "SELECT skills FROM job_seeker WHERE User_id = ?";
+
+  con.query(sql1, [userId], (err, userResult) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send(err);
+    }
+
+    if (!userResult.length) return res.send([]);
+
+    const skills = userResult[0].skills;
+
+    if (!skills) return res.send([]);
+
+    // 🔥 normalize skills
+    const skillArray = skills
+      .toLowerCase()
+      .split(",")
+      .map(s => s.trim());
+
+    // 🔥 get all jobs first
+    const sql2 = `
+      SELECT j.*, jc.Jobcat_name
+      FROM job j
+      LEFT JOIN job_category jc ON j.Jobcat_id = jc.Jobcat_id
+    `;
+
+    con.query(sql2, (err, jobs) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).send(err);
+      }
+
+      // 🔥 FILTER IN NODE (BEST WAY)
+      const matchedJobs = jobs.filter(job => {
+        const jobSkills = (job.skill || "").toLowerCase();
+
+        return skillArray.some(skill =>
+          jobSkills.includes(skill)
+        );
+      });
+
+      res.send(matchedJobs);
+    });
+
+  });
+});
+
+//job details
+app.get("/api/getjobdetails/:id", (req, res) => {
+
+  const Job_id = req.params.id;
+
+  const sql = `
+    SELECT 
+      job.*, 
+      company.Company_name,
+      company.email,
+      company.Contact_no
+    FROM job
+    LEFT JOIN company 
+      ON job.Company_id = company.Company_id
+    WHERE job.Job_id = ?
+  `;
+
+  con.query(sql, [Job_id], (err, result) => {
+
+    if (err) {
+      console.log(err);
+      return res.status(500).send(err);
+    }
+
+    console.log(result); // 🔥 IMPORTANT DEBUG
+
+    res.send(result);
+  });
+
+});
+
+//Admin Manage Profile
+// GET ADMIN PROFILE
+app.get("/api/admin/profile/:id", (req, res) => {
+  const admin_id = req.params.id;
+
+  const sql = "SELECT * FROM admin_login WHERE admin_id = ?";
+  
+  con.query(sql, [admin_id], (err, result) => {
+    if (err) {
+      console.log(err);
+      res.send({ success: false });
+    } else {
+      res.send({ success: true, data: result[0] });
+    }
+  });
+});
+
+// UPDATE ADMIN PROFILE
+app.put("/api/admin/update", (req, res) => {
+  console.log("BODY:", req.body); // 🔥 debug
+
+  const { admin_id, admin_email, admin_password } = req.body;
+
+  if (!admin_id) {
+    return res.status(400).send({ message: "Admin ID missing" });
+  }
+
+  const sql = `
+    UPDATE admin_login
+    SET admin_email = ?, admin_password = ?
+    WHERE admin_id = ?
+  `;
+
+  con.query(sql, [admin_email, admin_password, admin_id], (err, result) => {
+    if (err) {
+      console.log("SQL ERROR:", err);
+      return res.status(500).send(err);
+    }
+
+    res.send({ success: true });
+  });
+});
+// ================== START SERVER ==================
 const PORT = 1337;
 
 app.listen(PORT, () => {

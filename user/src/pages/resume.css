@@ -1,46 +1,38 @@
-/* PAGE BACKGROUND */
+/* ===== PAGE ===== */
 body {
-  background: #f4f6f9;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f5f6f7;
 }
 
-/* MAIN CONTAINER */
 .resume-container {
-  width: 800px;
-  margin: 40px auto;
-  background: #ffffff;
+  max-width: 850px;
+  margin: 100px auto 60px; /* 🔥 fix header + footer overlap */
   padding: 30px 40px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.1);
-  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+  border-radius: 6px;
+  font-family: "Segoe UI", sans-serif;
+  color: #222;
 }
 
-/* HEADER */
+/* ===== HEADER ===== */
 .resume-header {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 25px;
 }
 
-/* PROFILE IMAGE */
-.resume-photo {
+/* IMAGE */
+.resume-pho {
   width: 110px;
   height: 110px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid #007bff;
+  object-fit: contain;  /* 🔥 shows full image */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;     /* optional */
 }
-
-/* NAME */
-.resume-header h1 {
-  margin: 0;
-  font-size: 28px;
-  color: #2c3e50;
-}
-
-/* CONTACT */
-.resume-header p {
-  margin: 3px 0;
-  color: #555;
+/* HEADER INFO */
+.resume-header div p {
+  margin: 4px 0;
   font-size: 14px;
 }
 
@@ -48,114 +40,114 @@ body {
 hr {
   margin: 20px 0;
   border: none;
-  border-top: 2px solid #eee;
+  border-top: 1px solid #ddd;
 }
 
-/* SECTION */
+/* ===== SECTION ===== */
 .resume-section {
   margin-bottom: 20px;
 }
 
 /* SECTION TITLE */
 .resume-section h2 {
-  font-size: 18px;
-  color: #007bff;
+  font-size: 16px;
+  font-weight: 600;
   margin-bottom: 8px;
-  border-left: 4px solid #007bff;
+  border-left: 4px solid #000;
   padding-left: 10px;
 }
 
 /* TEXT */
 .resume-section p {
-  margin: 5px 0;
   font-size: 14px;
-  color: #333;
   line-height: 1.6;
+  margin: 5px 0;
 }
 
-/* EXPERIENCE LABELS */
-.resume-section b {
-  color: #000;
+/* ===== SKILLS TAG STYLE (optional) ===== */
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-/* DOWNLOAD BUTTON */
+.skills span {
+  background: #f1f1f1;
+  padding: 5px 10px;
+  font-size: 13px;
+  border-radius: 3px;
+  border: 1px solid #ddd;
+}
+
+/* ===== BUTTONS ===== */
 .download-btn {
-  text-align: center;
-  margin-top: 20px;
+  margin-top: 25px;
+  display: flex;
+  gap: 15px;
 }
 
 .download-btn button {
-  background: #007bff;
-  color: white;
-  padding: 12px 25px;
+  flex: 1;
+  padding: 12px;
   border: none;
-  border-radius: 6px;
-  font-size: 15px;
+  font-size: 14px;
+  border-radius: 4px;
   cursor: pointer;
   transition: 0.3s;
 }
 
-.download-btn button:hover {
-  background: #0056b3;
+/* DOWNLOAD */
+.download-btn button:first-child {
+  background: #000;
+  color: #fff;
 }
 
-/* LEFT SIDEBAR */
-.resume-sidebar {
-  width: 250px;
-  background: #f2f2f2;
-  padding: 20px;
+.download-btn button:first-child:hover {
+  background: #333;
 }
 
-/* NAME CENTER */
-.resume-sidebar h1 {
-  text-align: center;
-  font-size: 22px;
-  margin-top: 10px;
+/* EDIT */
+.edit-btn {
+  background: #666 !important;
+  color: #fff;
 }
 
-/* PHOTO CENTER */
-.resume-photo {
-  display: block;
-  margin: 0 auto;
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
+.edit-btn:hover {
+  background: #222 !important;
 }
 
-/* SECTION TITLE */
-.sidebar-title {
-  margin-top: 20px;
-  font-size: 16px;
-  border-bottom: 2px solid #000;
-  padding-bottom: 5px;
+.header-area {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100px;
+  z-index: 1000;
 }
 
-/* CONTACT BLOCK */
-.contact-info {
-  margin-top: 10px;
+
+
+.resume-container {
+  max-width: 850px;
+  margin-top: 250px;
 }
 
-/* EACH LINE */
-.contact-info p {
-  font-size: 14px;
-  margin: 8px 0;
-  line-height: 1.5;
-  word-break: break-word; /* fixes long email */
-}
-
-/* PRINT FIX (IMPORTANT FOR PDF) */
-@media print {
-  body {
-    background: white;
+  .resume-header {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 90px;
   }
 
-  .resume-container {
-    box-shadow: none;
-    margin: 0;
-    width: 100%;
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+
+  
+  .resume-photo {
+    width: 90px;
+    height: 90px;
   }
 
   .download-btn {
-    display: none;
+    flex-direction: column;
   }
 }

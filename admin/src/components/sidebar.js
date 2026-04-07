@@ -28,7 +28,7 @@ function Sidebar() {
       <ul className="list-unstyled">
         {/* ===== Dashboard ===== */}
         <li>
-          <Link to="/">
+          <Link to="/dashboard">
             <i className="icon-home"></i> Dashboard
           </Link>
         </li>
@@ -82,12 +82,8 @@ function Sidebar() {
           </Link>
         </li>
 
-        {/* ===== Manage Profile ===== */}
-        <li>
-          <Link to="/profile">
-            <i className="icon-user"></i> Manage Profile
-          </Link>
-        </li>
+       
+       
       </ul>
     </nav>
   );

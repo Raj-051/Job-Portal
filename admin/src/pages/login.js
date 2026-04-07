@@ -1,122 +1,86 @@
 import React from "react";
+import Axios from "axios";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 import "./login.css";
 
 function Login() {
+
+  const navigate = useNavigate();
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
+
+    if (!email || !password) {
+      Swal.fire("Error", "Please fill all fields", "error");
+      return;
+    }
+
+    Axios.post("http://localhost:1337/api/adminlogin", {
+      email,
+      password
+    })
+      .then((res) => {
+
+        if (res.data.status === "success") {
+
+          // Save admin session
+          sessionStorage.setItem("admin", JSON.stringify(res.data.admin));
+
+          Swal.fire("Success", "Admin Login Successful", "success")
+            .then(() => {
+              navigate("/dashboard"); // ✅ redirect
+            });
+
+        } else {
+          Swal.fire("Error", res.data.message, "error");
+        }
+
+      })
+      .catch((err) => {
+        console.log(err);
+        Swal.fire("Error", "Server Error", "error");
+      });
+  };
+
   return (
-    <> 
     <div className="login-page">
-      <div className="container d-flex align-items-center min-vh-100">
-        <div className="form-holder has-shadow w-100">
-          <div className="row">
+  <div className="login-card">
 
-            {/* Left Section */}
-            <div className="col-lg-6">
-              <div className="info d-flex align-items-center h-100">
-                <div className="content">
-                  <div className="logo">
-                    <h1>Dashboard</h1>
-                  </div>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Section */}
-            <div className="col-lg-6 bg-white">
-              <div className="form d-flex align-items-center h-101">
-                <div className="content2">
-
-                  <form>
-                    <div className="form-group">
-                      <input
-                        id="login-username"
-                        type="text"
-                        name="username"
-                        className="input-material"
-                        placeholder="User Name"
-                        required
-                      />
-                      <label
-                        htmlFor="login-username"
-                        className="label-material"
-                      >
-                      
-                      </label>
-                    </div>
-
-                    <div className="form-group">
-                      <input
-                        id="login-email"
-                        type="email"
-                        name="email"
-                        className="input-material"
-                        placeholder="Email Address"
-                        required
-                      />
-                      <label
-                        htmlFor="login-email"
-                        className="label-material"
-                      >
-                       
-                      </label>
-                    </div>
-
-                    <div className="form-group">
-                      <input
-                        id="login-password"
-                        type="password"
-                        name="password"
-                        className="input-material"
-                        placeholder="Password"
-                        required
-                      />
-                      <label
-                        htmlFor="login-password"
-                        className="label-material"
-                      >
-                       
-                      </label>
-                    </div>
-
-                    <div className="form-group">
-                      <button
-                        type="submit"
-                        className="btn btn-primary btn-block"
-                      >
-                        Login
-                      </button>
-                    </div>
-                  </form>
-
-                  <a href="#" className="forgot-pass">
-                    Forgot Password?
-                  </a>
-                  <br />
-                  <small>Do not have an account?</small>
-                  <a href="#" className="signup"> Signup</a>
-
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      <div className="copyrights text-center">
-        <p>
-          2018 © Your company. Download From{" "}
-          <a
-            href="https://templateshub.net"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Templates Hub
-          </a>
-        </p>
-      </div>
+    {/* LEFT */}
+    <div className="left-panel">
+      <h1>Admin Panel</h1>
+      <p>Login to manage system</p>
     </div>
-    </>
+
+    {/* RIGHT */}
+    <div className="right-panel">
+
+      <form onSubmit={handleLogin}>
+
+        <input
+          id="login-email"
+          type="email"
+          placeholder="Email"
+        />
+
+        <input
+          id="login-password"
+          type="password"
+          placeholder="Password"
+        />
+
+        <button>Login</button>
+
+      </form>
+
+    </div>
+
+  </div>
+</div>
   );
 }
 

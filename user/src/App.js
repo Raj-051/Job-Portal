@@ -13,6 +13,9 @@ import Resume from "./pages/Resume";
 import UploadResume from "./pages/UploadResume";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Application from "./pages/application";
+import EditProfile from "./pages/editprofile";
+import JobDetails from "./pages/JobDetails";
 
 function App() {
   return (
@@ -39,8 +42,10 @@ function App() {
                 <Route path="/Contact" element={<Contact />} />
                 <Route path="/UploadResume" element={<UploadResume/>} />
                 <Route path="/UserDashboard" element={<UserDashboard />} />
-                <Route path="/Resume" element ={<Resume/>} />
-
+                <Route path="/resume" element={<Resume />} />
+                <Route path="/Application" element={<Application />} />
+                <Route path="/editprofile" element={<EditProfile />} />
+                <Route path="/jobdetails" element={<JobDetails />} />
               </Routes>
 
               <Footer />

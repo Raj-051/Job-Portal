@@ -1,63 +1,67 @@
-import React from "react";
+import React, { useState } from "react";
+import Axios from "axios";
 import "./contact.css";
-import Swal from "sweetalert2";
 
 function Contact() {
 
-  function sendMessage(e){
-    e.preventDefault();
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: ""
+  });
 
-    Swal.fire({
-      icon:"success",
-      title:"Message Sent",
-      text:"Thank you for contacting us!"
-    });
-  }
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = () => {
+
+    Axios.post("http://localhost:1337/api/contact", form)
+      .then(() => {
+        alert("Message Sent Successfully!");
+        setForm({ name: "", email: "", phone: "", message: "" });
+      })
+      .catch(() => alert("Error sending message"));
+  };
 
   return (
-    <div className="contact-page">
+    <div className="contact-container">
 
-      {/* PAGE TITLE */}
-      <section className="contact-header">
-        <h1>Contact Us</h1>
-        <p>We would love to hear from you</p>
-      </section>
+      <h2>Contact Us</h2>
 
-      <div className="container contact-container">
+      <input
+        type="text"
+        name="name"
+        placeholder="Your Name"
+        value={form.name}
+        onChange={handleChange}
+      />
 
-        {/* CONTACT INFO */}
-        <div className="contact-info">
+      <input
+        type="email"
+        name="email"
+        placeholder="Your Email"
+        value={form.email}
+        onChange={handleChange}
+      />
 
-          <h3>Contact Information</h3>
+      <input
+        type="text"
+        name="phone"
+        placeholder="Phone Number"
+        value={form.phone}
+        onChange={handleChange}
+      />
 
-          <p><strong>Address:</strong> Vadodara, Gujarat, India</p>
-          <p><strong>Email:</strong> support@jobportal.com</p>
-          <p><strong>Phone:</strong> +91 6359014242</p>
+      <textarea
+        name="message"
+        placeholder="Your Message"
+        value={form.message}
+        onChange={handleChange}
+      />
 
-        </div>
-
-        {/* CONTACT FORM */}
-        <div className="contact-form">
-
-          <h3>Send Message</h3>
-
-          <form onSubmit={sendMessage}>
-
-            <input type="text" placeholder="Your Name" required />
-
-            <input type="email" placeholder="Your Email" required />
-
-            <textarea placeholder="Your Message" rows="5" required></textarea>
-
-            <button type="submit" className="btn-send">
-              Send Message
-            </button>
-
-          </form>
-
-        </div>
-
-      </div>
+      <button onClick={handleSubmit}>Send Message</button>
 
     </div>
   );

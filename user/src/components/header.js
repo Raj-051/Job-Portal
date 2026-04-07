@@ -19,7 +19,7 @@ function Header() {
         {/* Logo */}
         <div className="logo">
           <Link to="/">
-            <img src="/img/logo.png" alt="logo" />
+            <img src="/img/logo2.png" alt="logo" />
           </Link>
         </div>
 
@@ -29,7 +29,7 @@ function Header() {
             <li><Link to="/">Home</Link></li>
             <li><Link to="/About">About Us</Link></li>
             <li><Link to="/browsejob">Browse Job</Link></li>
-            <li><Link to="/candidates">Candidates</Link></li>
+            <li><Link to="/Application">Applications</Link></li>
             <li><Link to="/Contact">Contact</Link></li>
           </ul>
         </nav>
@@ -44,14 +44,10 @@ function Header() {
             </>
           ) : (
             <>
-              <a
-                href={`http://localhost:1337/api/generate-resume/${user1.User_id}`}
-                target="_blank"
-                rel="noreferrer"
-                className="resume-btn"
-              >
+              {/* ✅ FIXED */}
+              <Link to="/resume" className="resume-btn">
                 Resume
-              </a>
+              </Link>
 
               <button className="logout-btn" onClick={Logout}>
                 Logout

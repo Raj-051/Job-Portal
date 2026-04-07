@@ -38,55 +38,15 @@ function Header() {
                 </div>
               </a>
 
-              <button className="sidebar-toggle">
-                <i className="fa fa-long-arrow-left"></i>
-              </button>
+              
             </div>
 
             <div className="right-menu list-inline no-margin-bottom">
               <div className="list-inline-item">
-                <a href="#" className="search-open nav-link">
-                  <i className="icon-magnifying-glass-browser"></i>
-                </a>
-              </div>
+              
+              </div>  
 
-              <div className="list-inline-item dropdown">
-                <a
-                  id="navbarDropdownMenuLink1"
-                  href="http://example.com"
-                  className="nav-link messages-toggle"
-                >
-                  <i className="icon-email"></i>
-                  <span className="badge dashbg-1">5</span>
-                </a>
-              </div>
 
-              <div className="list-inline-item dropdown">
-                <a
-                  id="navbarDropdownMenuLink2"
-                  href="http://example.com"
-                  className="nav-link tasks-toggle"
-                >
-                  <i className="icon-new-file"></i>
-                  <span className="badge dashbg-3">9</span>
-                </a>
-
-                <div className="dropdown-menu tasks-list">
-                  <a href="#" className="dropdown-item">
-                    <div className="text d-flex justify-content-between">
-                      <strong>Task 1</strong>
-                      <span>40% complete</span>
-                    </div>
-                    <div className="progress">
-                      <div
-                        role="progressbar"
-                        style={{ width: "40%" }}
-                        className="progress-bar dashbg-1"
-                      ></div>
-                    </div>
-                  </a>
-                </div>
-              </div>
 
               <div className="list-inline-item logout">
                 <a id="logout" href="login" className="nav-link">

@@ -1,73 +1,215 @@
-/* Page Background */
-.addjob-page {
+/* 🌐 PAGE */
+.browsejob-page {
+  padding: 40px;
+  background: #f5f7fa;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f4f6f9, #e9ecef);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px 20px;
 }
 
-/* Form Card */
-.form-card {
-  background: #ffffff;
-  width: 100%;
-  max-width: 600px;
-  padding: 35px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-}
-
-/* Heading */
-.form-card h2 {
+/* 🔥 TITLE */
+.section-title {
   text-align: center;
-  margin-bottom: 25px;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 30px;
   color: #333;
 }
 
-/* Inputs + Select + Textarea */
-.form-card input,
-.form-card select,
-.form-card textarea {
-  width: 100%;
-  padding: 10px 12px;
-  margin-bottom: 15px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
+/* 📦 JOB CARD CONTAINER */
+.job-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 💼 CARD */
+.job-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   transition: 0.3s;
 }
 
-/* Focus Effect */
-.form-card input:focus,
-.form-card select:focus,
-.form-card textarea:focus {
-  border-color: #007bff;
-  outline: none;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+/* ✨ HOVER EFFECT */
+.job-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
 }
 
-/* Textarea Resize */
-.form-card textarea {
-  resize: vertical;
-  min-height: 90px;
+/* 🔹 LEFT SECTION */
+.job-card-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
-/* Submit Button */
-.form-card button {
-  width: 100%;
-  padding: 12px;
-  background-color: #28a745;
-  color: white;
+/* 🖼️ ICON */
+.job-card-left img {
+  width: 60px;
+  height: 60px;
+  background: #eef2f7;
+  padding: 10px;
+  border-radius: 50%;
+}
+
+/* 📄 INFO */
+.job-info h4 {
+  margin: 0;
+  font-size: 18px;
+  color: #222;
+}
+
+.job-info p {
+  margin: 3px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+/* 🔥 STATUS TEXT */
+.job-info b {
+  color: #333;
+}
+
+/* 🎯 BUTTONS */
+.btn-apply {
+  padding: 8px 16px;
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
+  border-radius: 6px;
   cursor: pointer;
-  transition: 0.3s ease;
+  font-size: 14px;
+  font-weight: 500;
+  transition: 0.3s;
 }
 
-/* Hover Effect */
-.form-card button:hover {
+/* ✅ SHORTLIST BUTTON */
+.btn-apply:first-child {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.btn-apply:first-child:hover {
   background-color: #218838;
+}
+
+/* ❌ REJECT BUTTON */
+.btn-apply:last-child {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.btn-apply:last-child:hover {
+  background-color: #c82333;
+}
+
+/* 🚫 DISABLED BUTTON */
+.btn-apply:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* 📱 RESPONSIVE */
+@media (max-width: 768px) {
+  .job-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .job-card-left {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn-apply {
+    width: 100%;
+  }
+}
+
+/* 📊 TABLE */
+.candidate-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* HEADER */
+.candidate-table thead {
+  background: #007bff;
+  color: #fff;
+}
+
+.candidate-table th {
+  padding: 12px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  
+}
+
+/* BODY */
+.candidate-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+/* HOVER */
+.candidate-table tbody tr:hover {
+  background: #f5f7fa;
+}
+
+/* STATUS COLORS */
+.status-shortlisted {
+  color: green;
+  font-weight: bold;
+}
+
+.status-rejected {
+  color: red;
+  font-weight: bold;
+}
+
+.status-pending {
+  color: orange;
+  font-weight: bold;
+}
+
+/* BUTTONS */
+.btn-shortlist {
+  background: #28a745;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  margin-right: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-shortlist:hover {
+  background: #218838;
+}
+
+.btn-reject {
+  background: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-reject:hover {
+  background: #c82333;
+}
+
+/* DISABLED */
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }

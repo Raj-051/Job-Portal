@@ -1,0 +1,125 @@
+/* PAGE */
+.page-content {
+  padding: 20px;
+  background: #f1f5f9;
+  min-height: 100vh;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* HEADER */
+.page-header h2 {
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* TABLE CONTAINER */
+.table-container {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+/* TABLE */
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* HEADER */
+.custom-table thead {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: white;
+}
+
+.custom-table th {
+  padding: 14px;
+  text-align: left;
+  font-size: 14px;
+}
+
+/* BODY */
+.custom-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  vertical-align: middle;
+}
+
+/* ROW HOVER */
+.custom-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* SKILLS COLUMN */
+.custom-table td:nth-child(5) {
+  max-width: 300px;
+  font-size: 13px;
+  color: #475569;
+  word-break: break-word;
+}
+
+/* STATUS + BUTTON CONTAINER */
+.status-container {
+  display: flex;
+  justify-content: space-between; /* 🔥 left + right */
+  align-items: center;
+  gap: 10px;
+}
+
+/* STATUS BADGE */
+.status {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status.active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status.inactive {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* BUTTONS */
+.btn-block,
+.btn-unblock {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* BLOCK */
+.btn-block {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-block:hover {
+  background: #dc2626;
+}
+
+/* UNBLOCK */
+.btn-unblock {
+  background: #22c55e;
+  color: white;
+}
+
+.btn-unblock:hover {
+  background: #16a34a;
+}
+
+/* NO DATA */
+.no-data {
+  text-align: center;
+  padding: 20px;
+  color: #64748b;
+  font-weight: 500;
+}
