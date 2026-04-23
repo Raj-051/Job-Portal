@@ -17,6 +17,7 @@ import Viewjoblist from "./pages/viewjoblist";
 import EditJobCategory from "./pages/editjobcategory";
 import Dashboard from "./pages/dashboard";
 import Editjoblist from "./pages/editjoblist";
+import SendMessage from "./pages/sendmessage";
 
 
 
@@ -48,31 +49,32 @@ function App() {
   return (
     <BrowserRouter>
 
-        {/* Default Home Page */}
-        <Routes>
+      {/* Default Home Page */}
+      <Routes>
 
-  {/* Default Page → Login */}
-  <Route path="/" element={<Login />} />
+        {/* Default Page → Login */}
+        <Route path="/" element={<Login />} />
 
-  {/* Auth Pages */}
-  <Route path="/login" element={<Login />} />
-  <Route path="/signup" element={<Signup />} />
-  <Route path="/logout" element={<Logout />} />
+        {/* Auth Pages */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/logout" element={<Logout />} />
 
-  {/* Dashboard Pages */}
-  <Route path="/dashboard" element={<DashboardLayout><Dashboard/></DashboardLayout>} />
-  <Route path="/addjobcategory" element={<DashboardLayout><AddJobCategory /></DashboardLayout>} />
-  <Route path="/viewjobcategory" element={<DashboardLayout><ViewJobcategory /></DashboardLayout>} />
-  <Route path="/editjobcategory" element={<DashboardLayout><EditJobCategory /></DashboardLayout>} />
-  <Route path="/viewjoblist" element={<DashboardLayout><Viewjoblist /></DashboardLayout>} />
-  <Route path="/addjoblist" element={<DashboardLayout><Addjoblist /></DashboardLayout>} />
-  <Route path="/editjoblist" element={<DashboardLayout><Editjoblist /></DashboardLayout>} />
-  <Route path="/managecandidates" element={<DashboardLayout><ManageCandidates /></DashboardLayout>} />
-  <Route path="/scheduleinterview" element={<DashboardLayout><ScheduleInterview /></DashboardLayout>} />
-  <Route path="/chatwithjobseeker" element={<DashboardLayout><ChatWithJobSeeker /></DashboardLayout>} />
-  <Route path="/profile" element={<DashboardLayout><ManageProfile /></DashboardLayout>} />
+        {/* Dashboard Pages */}
+        <Route path="/dashboard" element={<DashboardLayout><Dashboard /></DashboardLayout>} />
+        <Route path="/addjobcategory" element={<DashboardLayout><AddJobCategory /></DashboardLayout>} />
+        <Route path="/viewjobcategory" element={<DashboardLayout><ViewJobcategory /></DashboardLayout>} />
+        <Route path="/editjobcategory" element={<DashboardLayout><EditJobCategory /></DashboardLayout>} />
+        <Route path="/viewjoblist" element={<DashboardLayout><Viewjoblist /></DashboardLayout>} />
+        <Route path="/addjoblist" element={<DashboardLayout><Addjoblist /></DashboardLayout>} />
+        <Route path="/editjoblist" element={<DashboardLayout><Editjoblist /></DashboardLayout>} />
+        <Route path="/managecandidates" element={<DashboardLayout><ManageCandidates /></DashboardLayout>} />
+        <Route path="/scheduleinterview" element={<DashboardLayout><ScheduleInterview /></DashboardLayout>} />
+        <Route path="/chatwithjobseeker" element={<DashboardLayout><ChatWithJobSeeker /></DashboardLayout>} />
+        <Route path="/profile" element={<DashboardLayout><ManageProfile /></DashboardLayout>} />
+        <Route path="/sendmessage" element={<DashboardLayout><SendMessage /></DashboardLayout>} />
 
-</Routes>
+      </Routes>
 
     </BrowserRouter>
   );

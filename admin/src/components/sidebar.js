@@ -47,7 +47,7 @@ function Sidebar() {
 
           {openEmployer && (
             <ul className="xyz">
-              <li>
+              <li className="viewEmp">
                 <Link to="/employers">View Employer</Link>
               </li>
             </ul>
@@ -82,12 +82,11 @@ function Sidebar() {
           </Link>
         </li>
 
-       
-       
+
+
       </ul>
     </nav>
   );
 }
 
 export default Sidebar;
- 

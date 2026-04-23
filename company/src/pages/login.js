@@ -40,6 +40,7 @@ function Login() {
   const data = {
     Company_id: response.data.company.Company_id,
     email: response.data.company.email,
+    Company_name: response.data.company.Company_name,
   };
         sessionStorage.setItem("mydata", JSON.stringify(data));
 

@@ -14,10 +14,10 @@ function Sidebar() {
     <div className="sidebar">
       <div className="profile-section">
         <img
-  src={rajImage}
-  alt="profile"
-  className="profile-img"
-/>
+          src={rajImage}
+          alt="profile"
+          className="profile-img"
+        />
 
         <div>
           <h3>Raj Patel</h3>
@@ -84,7 +84,7 @@ function Sidebar() {
         </li>
 
         <li>
-          <Link to="/profile">Manage Profile</Link>
+          <Link to="/sendmessage">Send Message</Link>
         </li>
 
       </ul>

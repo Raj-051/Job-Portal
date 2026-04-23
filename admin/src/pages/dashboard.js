@@ -95,9 +95,6 @@ function Dashboard() {
 
   return (
     <>
-      <Header />
-      <Sidebar />
-
       <div className="page-content">
 
         <div className="page-header">
@@ -162,8 +159,6 @@ function Dashboard() {
         </section>
 
       </div>
-
-      <Footer />
     </>
   );
 }

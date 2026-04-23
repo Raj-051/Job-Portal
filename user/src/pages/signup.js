@@ -40,11 +40,11 @@ function UserSignup() {
     formData.append("Address", Address);
     formData.append("Education", Education);
     formData.append("Experience", experience);
-    formData.append("Skills", Skills);
+    formData.append("skills", Skills);
 
     if (experience !== "0") {
-      formData.append("Company_name", Company_name);
-      formData.append("Post", Post);
+      formData.append("company_name", Company_name);
+      formData.append("post", Post);
       formData.append("Duration", Duration);
       formData.append("Work_description", Work_description);
 

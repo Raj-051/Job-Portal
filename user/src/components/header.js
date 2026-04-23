@@ -4,7 +4,7 @@ import "./header.css";
 
 function Header() {
 
-  function Logout(){
+  function Logout() {
     sessionStorage.clear();
     window.location = "/login";
   }
@@ -12,7 +12,7 @@ function Header() {
   const user1 = JSON.parse(sessionStorage.getItem("mydata"));
 
   return (
-    <header className="header-area">
+    <header className="header-user">
 
       <div className="header-container">
 
@@ -31,6 +31,7 @@ function Header() {
             <li><Link to="/browsejob">Browse Job</Link></li>
             <li><Link to="/Application">Applications</Link></li>
             <li><Link to="/Contact">Contact</Link></li>
+            <li><Link to="/notification">Notification</Link>  </li>
           </ul>
         </nav>
 

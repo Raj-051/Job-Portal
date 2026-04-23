@@ -47,26 +47,31 @@ useEffect(() => {
   };
 
   return (
-    <div className="profile-container">
-      <h2>Admin Profile</h2>
+    <div className="page-content">
+      <div className="page-header no-margin-bottom">
+        <div className="container-fluid">
+          <h2 className="h5 no-margin-bottom">Admin Profile</h2>
+        </div>
+      </div>
+      <div className="profile-container">
+        <label>Email:</label>
+        <input
+          type="email"
+          name="admin_email"
+          value={admin.admin_email}
+          onChange={handleChange}
+        />
 
-      <label>Email:</label>
-      <input
-        type="email"
-        name="admin_email"
-        value={admin.admin_email}
-        onChange={handleChange}
-      />
+        <label>Password:</label>
+        <input
+          type="text"
+          name="admin_password"
+          value={admin.admin_password}
+          onChange={handleChange}
+        />
 
-      <label>Password:</label>
-      <input
-        type="text"
-        name="admin_password"
-        value={admin.admin_password}
-        onChange={handleChange}
-      />
-
-      <button onClick={handleUpdate}>Update Profile</button>
+        <button onClick={handleUpdate}>Update Profile</button>
+      </div>
     </div>
   );
 }

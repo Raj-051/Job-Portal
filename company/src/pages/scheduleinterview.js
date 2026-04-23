@@ -26,7 +26,7 @@ function ScheduleInterview() {
         setInterviews(Array.isArray(res.data) ? res.data : []);
       });
 
-  }, [company]);
+  }, [company?.Company_id]);
 
   // ✅ SCHEDULE INTERVIEW
   const scheduleInterview = (e) => {
@@ -55,8 +55,8 @@ function ScheduleInterview() {
       interview_date: date,
       interview_time: time,
       interview_mode: mode,
-      interview_link: mode === "Online" ? location : null,
-      interview_location: mode === "Offline" ? location : null
+      interview_link: mode === "Online" ? location : "",
+      interview_location: mode === "Offline" ? location : ""
     })
     .then((res) => {
 
@@ -68,8 +68,8 @@ function ScheduleInterview() {
         interview_date: date,
         interview_time: time,
         interview_mode: mode,
-        interview_link: mode === "Online" ? location : null,
-        interview_location: mode === "Offline" ? location : null,
+        interview_link: mode === "Online" ? location : "",
+        interview_location: mode === "Offline" ? location : "",
         status: "Scheduled"
       };
 
@@ -96,7 +96,7 @@ function ScheduleInterview() {
             required
             onChange={(e) => {
               const item = shortlisted.find(
-                (d) => d.Apply_id == e.target.value
+                (d) => String(d.Apply_id) === String(e.target.value)
               );
               setSelected(item);
             }}

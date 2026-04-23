@@ -140,8 +140,8 @@ function Browsejob() {
 
                   {/* 🔥 OPTIONAL: SHOW END DATE */}
                   <small style={{ color: "#888" }}>
-                    Last Date: {job.end_date}
-                  </small>
+  Last Date: {new Date(job.end_date).toLocaleDateString("en-GB").replace(/\//g, "-")}
+</small>
                 </div>
               </div>
 

@@ -1,70 +1,71 @@
 /* Main container */
 .profile-container {
-  width: 400px;
-  margin: 60px auto;
-  padding: 30px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  font-family: "Segoe UI", sans-serif;
-}
-
-/* Title */
-.profile-container h2 {
-  text-align: center;
-  margin-bottom: 25px;
-  color: #333;
+  width: 100%;
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 40px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(10px);
 }
 
 /* Labels */
 .profile-container label {
   display: block;
-  margin-bottom: 6px;
-  margin-top: 15px;
+  margin-bottom: 8px;
+  margin-top: 20px;
   font-weight: 600;
-  color: #555;
+  color: var(--text-secondary);
+  font-size: 14px;
 }
 
 /* Input fields */
 .profile-container input {
   width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  padding: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-primary);
+  color: var(--text-primary);
   outline: none;
-  transition: 0.3s;
-  font-size: 14px;
+  transition: var(--transition-normal);
+  font-size: 15px;
 }
 
 /* Input focus */
 .profile-container input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 /* Button */
 .profile-container button {
   width: 100%;
-  margin-top: 25px;
-  padding: 12px;
+  margin-top: 30px;
+  padding: 15px;
   border: none;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #007bff, #0056b3);
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
   color: white;
   font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  transition: 0.3s;
+  transition: var(--transition-normal);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
 }
 
 /* Button hover */
 .profile-container button:hover {
-  background: linear-gradient(135deg, #0056b3, #003f7f);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
 }
 
 /* Responsive */
 @media (max-width: 500px) {
   .profile-container {
-    width: 90%;
-    padding: 20px;
+    width: 100%;
+    padding: 25px;
   }
 }

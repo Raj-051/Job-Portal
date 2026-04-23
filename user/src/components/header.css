@@ -1,80 +1,84 @@
 /* Header background */
 
-.header-area{
-    background:#0b1d39;
-    padding:15px 40px;
+.header-user {
+    background: #0b1d39;
+    padding: 15px 40px;
+    height: 50%;
+
 }
 
 /* Main container */
 
-.header-container{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 /* Logo */
 
-.logo img{
-    height:45px;
+.logo img {
+    height: 60px;
+    width: 100px;
 }
 
 /* Navigation */
 
-.main-menu ul{
-    display:flex;
-    gap:40px;
-    list-style:none;
-    margin:0;
-    padding:0;
+.main-menu ul {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
-.main-menu ul li a{
-    text-decoration:none;
-    color:white;
-    font-size:16px;
-    font-weight:500;
+.main-menu ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
 }
 
-.main-menu ul li a:hover{
-    color:#00d084;
+.main-menu ul li a:hover {
+    color: #00d084;
 }
 
 /* Right buttons */
 
-.header-buttons{
-    display:flex;
-    align-items:center;
-    gap:15px;
+.header-buttons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 /* Buttons */
 
-.login-btn{
-    color:white;
-    text-decoration:none;
+.login-btn {
+    color: white;
+    text-decoration: none;
 }
 
-.signup-btn{
-    background:#00d084;
-    padding:8px 18px;
-    color:white;
-    border-radius:5px;
-    text-decoration:none;
+.signup-btn {
+    background: #00d084;
+    padding: 8px 18px;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
 }
 
-.resume-btn{
-    color:white;
-    text-decoration:none;
+.resume-btn {
+    color: white;
+    text-decoration: none;
 }
 
-.resume-btn:hover{
+.resume-btn:hover {
     color: #00d084;
 }
-.logout-btn{
-    padding:6px 14px;
-    border:none;
-    cursor:pointer;
+
+.logout-btn {
+    padding: 6px 14px;
+    border: none;
+    cursor: pointer;
     background-color: #0b1d39;
 }
 

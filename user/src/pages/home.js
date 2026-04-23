@@ -21,6 +21,7 @@ function Home() {
   const [recommendedJobs, setRecommendedJobs] = useState([]);
 
   const [showAll, setShowAll] = useState(false);
+  const [expandedDesc, setExpandedDesc] = useState({});
 
   useEffect(() => {
 
@@ -48,13 +49,13 @@ function Home() {
 
       // ⭐ Recommended Jobs
       Axios.get(`http://localhost:1337/api/recommendedJobs/${user.User_id}`)
-  .then((res) => {
-    setRecommendedJobs(res.data);
-  })
-  .catch((err) => {
-    console.log("Recommended Jobs Error:", err);
-    setRecommendedJobs([]);
-  });
+        .then((res) => {
+          setRecommendedJobs(res.data);
+        })
+        .catch((err) => {
+          console.log("Recommended Jobs Error:", err);
+          setRecommendedJobs([]);
+        });
     }
 
   }, []);
@@ -137,7 +138,7 @@ function Home() {
             {categories.length > 0 ? (
               (showAll ? categories : categories.slice(0, 4)).map((cat, index) => {
 
-                const icons = ["🎨","📈","💻","⚙️","📊","🛒","📞","🏥"];
+                const icons = ["🎨", "📈", "💻", "⚙️", "📊", "🛒", "📞", "🏥"];
 
                 return (
                   <div className="category-card" key={cat.Jobcat_id}>
@@ -146,7 +147,21 @@ function Home() {
                     </div>
 
                     <h4>{cat.Jobcat_name}</h4>
-                    <p>{cat.Jobcat_description}</p>
+                    <p className={expandedDesc[cat.Jobcat_id] ? "desc expanded" : "desc"}>
+                      {cat.Jobcat_description}
+                    </p>
+
+                    <span
+                      className="toggle-btn"
+                      onClick={() =>
+                        setExpandedDesc((prev) => ({
+                          ...prev,
+                          [cat.Jobcat_id]: !prev[cat.Jobcat_id],
+                        }))
+                      }
+                    >
+                      {expandedDesc[cat.Jobcat_id] ? "▲ Show Less" : "▼ Read More"}
+                    </span>
                   </div>
                 );
               })
@@ -171,66 +186,66 @@ function Home() {
 
         </div>
       </section>
-      
-{/* ⭐ job listing */}
 
-<section className="featured-jobs-section">
-  <div className="container">
+      {/* ⭐ job listing */}
 
-    <h2 className="section-title">Jobs Listing</h2>
+      <section className="featured-jobs-section">
+        <div className="container">
 
-    {jobs
-      .filter((job) => {
-        // ✅ remove expired jobs
-        if (!job.end_date) return false;
+          <h2 className="section-title">Jobs Listing</h2>
 
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+          {jobs
+            .filter((job) => {
+              // ✅ remove expired jobs
+              if (!job.end_date) return false;
 
-        const endDate = new Date(job.end_date);
-        endDate.setHours(0, 0, 0, 0);
+              const today = new Date();
+              today.setHours(0, 0, 0, 0);
 
-        return endDate >= today;
-      })
-      .slice(0, 5)
-      .map((job) => (
-        <div className="job-card" key={job.Job_id}>
+              const endDate = new Date(job.end_date);
+              endDate.setHours(0, 0, 0, 0);
 
-         <div className="job-card-left">
-                <img src="/img/svg_icon/1.svg" alt="" />
+              return endDate >= today;
+            })
+            .slice(0, 5)
+            .map((job) => (
+              <div className="job-card" key={job.Job_id}>
 
-                <div className="job-info">
-                  <h4
-                    style={{ cursor: "pointer", color: "#007bff" }}
-                    onClick={() => navigate("/jobdetails", { state: job })}
-                  >
-                    {job.job_title}
-                  </h4>
+                <div className="job-card-left">
+                  <img src="/img/svg_icon/1.svg" alt="" />
 
-                  <p>
-                    {job.Jobcat_name} • {job.location} • {job.jobtype}
-                  </p>
+                  <div className="job-info">
+                    <h4
+                      style={{ cursor: "pointer", color: "#007bff" }}
+                      onClick={() => navigate("/jobdetails", { state: job })}
+                    >
+                      {job.job_title}
+                    </h4>
 
-                  {/* 🔥 OPTIONAL: SHOW END DATE */}
-                  <small style={{ color: "#888" }}>
-                    Last Date: {job.end_date}
-                  </small>
+                    <p>
+                      {job.Jobcat_name} • {job.location} • {job.jobtype}
+                    </p>
+
+                    {/* 🔥 OPTIONAL: SHOW END DATE */}
+                    <small style={{ color: "#888" }}>
+                      Last Date: {new Date(job.end_date).toLocaleDateString("en-GB").replace(/\//g, "-")}
+                    </small>
+                  </div>
                 </div>
-              </div>
 
-          <button
-            className="btn-apply"
-            disabled={appliedJobs.includes(job.Job_id)}
-            onClick={() => navigate("/browsejob", { state: job })}
-          >
-            {appliedJobs.includes(job.Job_id) ? "Applied" : "Apply Now"}
-          </button>
+                <button
+                  className="btn-apply"
+                  disabled={appliedJobs.includes(job.Job_id)}
+                  onClick={() => navigate("/browsejob", { state: job })}
+                >
+                  {appliedJobs.includes(job.Job_id) ? "Applied" : "Apply Now"}
+                </button>
+
+              </div>
+            ))}
 
         </div>
-      ))}
-
-  </div>
-</section>
+      </section>
 
       {/* ⭐ RECOMMENDED JOBS */}
       <section className="featured-jobs-section">
@@ -243,18 +258,18 @@ function Home() {
           ) : (
             recommendedJobs.slice(0, 5).map((job) => (
               <div className="job-card" key={job.Job_id}>
-              <div className="job-left">
+                <div className="job-left">
 
-                <h4 className="job-line">
-                  {job.job_title} • {job.Jobcat_name} • {job.location} • Last Date:{" "}
-                  {new Date(job.end_date).toLocaleDateString("en-GB", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric"
-                  })}
-                </h4>
+                  <h4 className="job-line">
+                    {job.job_title} • {job.Jobcat_name} • {job.location} • Last Date:{" "}
+                    {new Date(job.end_date).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric"
+                    })}
+                  </h4>
 
-              </div>
+                </div>
                 <button
                   className="btn-apply"
                   onClick={() => navigate("/browsejob", { state: job })}

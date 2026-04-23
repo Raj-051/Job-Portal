@@ -8,7 +8,7 @@ import Home from "./pages/home";
 import Browsejob from "./pages/browsejob";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
-import UserDashboard from "./pages/UserDashboard"; 
+import UserDashboard from "./pages/UserDashboard";
 import Resume from "./pages/Resume";
 import UploadResume from "./pages/UploadResume";
 import About from "./pages/About";
@@ -16,10 +16,11 @@ import Contact from "./pages/Contact";
 import Application from "./pages/application";
 import EditProfile from "./pages/editprofile";
 import JobDetails from "./pages/JobDetails";
+import Notification from "./pages/notification";
 
 function App() {
   return (
-    
+
     <Router>
 
       <Routes>
@@ -36,16 +37,17 @@ function App() {
               <Header />
 
               <Routes>
-                <Route path="/" element={<Home/>} />
-                <Route path="/About" element={<About/>} />
+                <Route path="/" element={<Home />} />
+                <Route path="/About" element={<About />} />
                 <Route path="/browsejob" element={<Browsejob />} />
                 <Route path="/Contact" element={<Contact />} />
-                <Route path="/UploadResume" element={<UploadResume/>} />
+                <Route path="/UploadResume" element={<UploadResume />} />
                 <Route path="/UserDashboard" element={<UserDashboard />} />
                 <Route path="/resume" element={<Resume />} />
                 <Route path="/Application" element={<Application />} />
                 <Route path="/editprofile" element={<EditProfile />} />
                 <Route path="/jobdetails" element={<JobDetails />} />
+                <Route path="/notification" element={<Notification />} />
               </Routes>
 
               <Footer />
